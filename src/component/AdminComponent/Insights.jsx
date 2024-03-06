@@ -25,7 +25,8 @@ const BoxWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 66px;
-  padding: 20px;
+  padding: 15px;
+  border-radius: 8px;
 `;
 
 const Box = styled.div`
@@ -60,15 +61,21 @@ const BoxContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 12px;
 `;
 
 const P = styled.p`
   font-size: 12px;
   color: ${theme.blackColor};
+  font-weight: 600;
+  margin-top: 17px;
+
 `;
 
-const H1Num = styled.h1`
-  /* Define styles for H1Num here */
+const H1Num = styled.h2`
+  font-size: 18px;
+  color: ${theme.blackColor};
+  font-weight: 600;
 `;
 
 const Wrapper = styled.div``;

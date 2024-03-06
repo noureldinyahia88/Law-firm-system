@@ -13,7 +13,7 @@ import { IoIosLogOut } from "react-icons/io";
 
 const SidebarWrapper = styled.div`
   width: 307px;
-  height: 100%;
+  /* height: 100%; */
   background-color: ${theme.whiteColor};
   padding: 26px;
   border-radius: 15px;
@@ -47,6 +47,7 @@ const SidebarContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 60px;
+  height: 94%;
 `;
 
 const SidebarTaps = styled.div`
