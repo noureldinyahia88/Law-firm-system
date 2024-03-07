@@ -31,11 +31,14 @@ const RightContent = styled.div`
   gap: 32px;
 `;
 const SearchInput = styled.input`
-  background-color: #f7f6f9;
-  border: 1px solid #000000;
+  background-color: #F7F6F9;
+  border: none;
   border-radius: 8px;
   padding: 10px;
   width: 344px;
+  &:focus{
+    outline: none;
+  }
 `;
 const Img = styled.img``;
 

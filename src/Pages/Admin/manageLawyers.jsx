@@ -5,7 +5,7 @@ import { IoSearch } from "react-icons/io5";
 import { CiFilter } from "react-icons/ci";
 import Sidebar from "../../component/ui/sidebar";
 import theme from "../../variables";
-import LawyerCard from "../../component/AdminComponent/UsersCard";
+
 import UsersCard from "../../component/AdminComponent/UsersCard";
 
 const Container = styled.div`
@@ -57,6 +57,7 @@ const SearchInput = styled.input`
 const BtnsWrapper = styled.div`
   display: flex;
   gap: 10px;
+  flex-wrap:wrap ;
 `;
 
 const Btn = styled.button`
