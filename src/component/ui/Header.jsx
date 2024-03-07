@@ -6,13 +6,13 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import userImage from "../../assets/Ellipse 40.png";
 const HeaderWrapper = styled.div`
   width: 100%;
-  width: 1082px;
+  /* width: 1082px; */
   background-color: ${theme.whiteColor};
-  border-radius:  0 12px 0 0 ;
+  border-radius: 0 12px 0 0;
 `;
 const Container = styled.div`
-  width: 1058px;
-  max-width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
 `;
 const HeaderContent = styled.div`
   display: flex;
@@ -29,7 +29,6 @@ const RightContent = styled.div`
   display: flex;
   align-items: center;
   gap: 32px;
-  
 `;
 const SearchInput = styled.input`
   background-color: #f7f6f9;
@@ -50,7 +49,9 @@ const Header = () => {
           <RightContent>
             <SearchInput placeholder="Search within system..." />
 
-            <IoMdNotificationsOutline style={{fontSize:"24px", cursor:"pointer"}} />
+            <IoMdNotificationsOutline
+              style={{ fontSize: "24px", cursor: "pointer" }}
+            />
 
             <Img src={userImage} alt />
           </RightContent>

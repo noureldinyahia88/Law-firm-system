@@ -23,8 +23,9 @@ const Vector = styled.img``;
 const BoxWrapper = styled.div`
   background-color: ${theme.whiteColor};
   display: flex;
-  justify-content: space-between;
-  gap: 66px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 5px;
   padding: 15px;
   border-radius: 8px;
 `;
@@ -69,7 +70,6 @@ const P = styled.p`
   color: ${theme.blackColor};
   font-weight: 600;
   margin-top: 17px;
-
 `;
 
 const H1Num = styled.h2`
@@ -79,71 +79,75 @@ const H1Num = styled.h2`
 `;
 
 const Wrapper = styled.div``;
+const Container = styled.div`
+  /* max-width: 1060px;
+margin: 0 auto; */
+`;
 
 const Insights = () => {
   return (
     <InsightsWrapper>
-      {/* <Container> */}
-      <InsightsrH2>INSIGHTS</InsightsrH2>
+      <Container>
+        <InsightsrH2>INSIGHTS</InsightsrH2>
 
-      <BoxWrapper>
-        <Box>
-          <BoxHeader>
-            <H2>Total Admins</H2>
-            <Wrapper>
-              <Vector src={adminvector} alt="" />
-            </Wrapper>
-          </BoxHeader>
+        <BoxWrapper>
+          <Box>
+            <BoxHeader>
+              <H2>Total Admins</H2>
+              <Wrapper>
+                <Vector src={adminvector} alt="" />
+              </Wrapper>
+            </BoxHeader>
 
-          <BoxContent>
-            <P>Current Value</P>
-            <H1Num>10</H1Num>
-          </BoxContent>
-        </Box>
+            <BoxContent>
+              <P>Current Value</P>
+              <H1Num>10</H1Num>
+            </BoxContent>
+          </Box>
 
-        <Box className="seniorLawyer">
-          <BoxHeader>
-            <H2>Total Admins</H2>
-            <Wrapper>
-              <Vector src={adminvector} alt="" />
-            </Wrapper>
-          </BoxHeader>
+          <Box className="seniorLawyer">
+            <BoxHeader>
+              <H2>Total Admins</H2>
+              <Wrapper>
+                <Vector src={adminvector} alt="" />
+              </Wrapper>
+            </BoxHeader>
 
-          <BoxContent>
-            <P>Current Value</P>
-            <H1Num>10</H1Num>
-          </BoxContent>
-        </Box>
+            <BoxContent>
+              <P>Current Value</P>
+              <H1Num>10</H1Num>
+            </BoxContent>
+          </Box>
 
-        <Box className="lawyer">
-          <BoxHeader>
-            <H2>Total Admins</H2>
-            <Wrapper>
-              <Vector src={adminvector} alt="" />
-            </Wrapper>
-          </BoxHeader>
+          <Box className="lawyer">
+            <BoxHeader>
+              <H2>Total Admins</H2>
+              <Wrapper>
+                <Vector src={adminvector} alt="" />
+              </Wrapper>
+            </BoxHeader>
 
-          <BoxContent>
-            <P>Current Value</P>
-            <H1Num>10</H1Num>
-          </BoxContent>
-        </Box>
+            <BoxContent>
+              <P>Current Value</P>
+              <H1Num>10</H1Num>
+            </BoxContent>
+          </Box>
 
-        <Box className="lawyerAssis">
-          <BoxHeader>
-            <H2>Total Admins</H2>
-            <Wrapper>
-              <Vector src={adminvector} alt="" />
-            </Wrapper>
-          </BoxHeader>
+          <Box className="lawyerAssis">
+            <BoxHeader>
+              <H2>Total Admins</H2>
+              <Wrapper>
+                <Vector src={adminvector} alt="" />
+              </Wrapper>
+            </BoxHeader>
 
-          <BoxContent>
-            <P>Current Value</P>
-            <H1Num>10</H1Num>
-          </BoxContent>
-        </Box>
-      </BoxWrapper>
-      {/* </Container> */}
+            <BoxContent>
+              <P>Current Value</P>
+              <H1Num>10</H1Num>
+            </BoxContent>
+          </Box>
+        </BoxWrapper>
+      </Container>
     </InsightsWrapper>
   );
 };

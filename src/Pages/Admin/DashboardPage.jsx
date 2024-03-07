@@ -7,27 +7,32 @@ import theme from "../../variables";
 import UserCard from "../../component/AdminComponent/UserCard";
 import arrow from "../../assets/V.png";
 
-const DashboardWrapper = styled.div`
+const PageWrapper = styled.div`
   display: flex;
   background-color: #f7f6f9;
-  width: 1442px;
+  width: 100%;
   border-radius: 12px;
 `;
 
 const DasdboardContent = styled.div`
   border-left: 1px solid ${theme.grayColor};
+  width: 85%;
+  margin: 0 auto;
 `;
 
 const Content = styled.div``;
 
 const Container = styled.div`
-  width: 1058px;
-  max-width: 100%;
+  /* width: 1300px; */
+  max-width: 1300px;
   margin: 0 auto;
 `;
 
 const ManageUserWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   padding: 20px;
   gap: 20px;
   margin-bottom: 20px;
@@ -75,7 +80,7 @@ const Arrowrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-margin-top: 60px;
+  margin-top: 60px;
 `;
 
 const H2 = styled.h2`
@@ -88,7 +93,7 @@ const H2 = styled.h2`
 const ArrowImg = styled.img``;
 const DashboardPage = () => {
   return (
-    <DashboardWrapper>
+    <PageWrapper>
       <Sidebar />
       <DasdboardContent>
         <Header />
@@ -156,7 +161,7 @@ const DashboardPage = () => {
           </Container>
         </Content>
       </DasdboardContent>
-    </DashboardWrapper>
+    </PageWrapper>
   );
 };
 

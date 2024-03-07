@@ -1,0 +1,222 @@
+import React, { useState } from "react";
+import styled from "styled-components";
+import { TfiMoreAlt } from "react-icons/tfi";
+import theme from "../../variables";
+import useImage from "../../assets/Rectangle 25.png";
+
+const CardWrapper = styled.div`
+  border: 2px solid ${theme.blueColor};
+  border-radius: 32px;
+  max-width: 324px;
+  padding: 15px;
+  margin-top: 12px;
+  
+  &:last-child {
+    margin-bottom: 50px;
+  }
+`;
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: self-start;
+  justify-content: space-between;
+`;
+const StatueWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5fd94b;
+  border-radius: 8px;
+  padding: 1px 3px;
+`;
+
+const Statue = styled.p`
+  font-size: 8px;
+  font-weight: 700;
+`;
+
+const ImageWrapper = styled.div`
+  margin-top: -15px;
+  width: 100px;
+  height: 130px;
+  border-radius: 0 0 116px 116px;
+  background-color: #ccd1ff;
+  position: relative;
+`;
+
+const ImageBorder = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+`;
+
+const Image = styled.img``;
+
+const BtsCard = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
+
+const OptionsWrapper = styled.div`
+  position: absolute;
+  right: -55%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #ccd1ff;
+  padding: 10px;
+  border-radius: 8px;
+  gap: 10px;
+  transition: display 0.5s ease;
+  &.show{
+  display: flex;
+  }
+
+`;
+
+const Btn = styled.button`
+transition: color 0.5s ease;
+font-weight: 600;
+background-color: transparent;
+border: none;
+cursor: pointer;
+  &:hover{
+    color: ${theme.blueColor};
+  }
+`;
+
+const Deatails = styled.div`
+  /* Your styles for Deatails */
+`;
+
+const H2 = styled.h2`
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px;
+`;
+
+const P = styled.p`
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+`;
+
+const Span = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+`;
+const BoxSWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const Box = styled.div`
+  padding: 15px;
+  max-width: 80px;
+  border-radius: 15px;
+  background-color: #ccd1ff;
+  text-align: center;
+  display: grid;
+  place-items: center;
+`;
+
+const H3 = styled.h3`
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+`;
+const BtnDeatails = styled.button`
+  background-color: ${theme.blueColor};
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  color: ${theme.whiteColor};
+  font-weight: bold;
+  cursor: pointer;
+`;
+const UsersCard = () => {
+
+    const [showOptions, setShowOptions] = useState(false)
+    const showOptionsWrapper = () => {
+        setShowOptions(!showOptions)
+    }
+  return (
+    <CardWrapper>
+      <CardHeader>
+        <StatueWrapper>
+          <Statue>ACTIVE</Statue>
+        </StatueWrapper>
+
+        <ImageWrapper>
+          <ImageBorder>
+            <Image src={useImage} alt="Union" />
+          </ImageBorder>
+        </ImageWrapper>
+
+        <BtsCard onClick={showOptionsWrapper}>
+          <TfiMoreAlt style={{ color: "#D9D9D9", fontSize: "24px" }} />
+          <OptionsWrapper className={`${showOptions ? 'show': ''}`}>
+            <Btn>Edit</Btn>
+            <Btn>Delete</Btn>
+          </OptionsWrapper>
+        </BtsCard>
+      </CardHeader>
+
+      <Deatails>
+        <H2>Robert Fox</H2>
+        <P>
+          Aduting <Span>(Senior)</Span>
+        </P>
+        <P>
+          <Span>ID:</Span> 3965
+        </P>
+        <P>
+          <Span>Phone:</Span> (205)555-0100
+        </P>
+        <P>
+          <Span>Creation Date:</Span> Dec 4, 2019 23:26
+        </P>
+        <P>
+          <Span>Email:</Span> RobertFox@example.com
+        </P>
+
+        <BoxSWrapper>
+          <Box>
+            <H3>
+              6 Years
+              <br />
+              experience
+            </H3>
+          </Box>
+
+          <Box>
+            <H3>
+              10 Closed
+              <br />
+              cases
+            </H3>
+          </Box>
+
+          <Box>
+            <H3>
+              Current
+              <br />
+              available
+            </H3>
+          </Box>
+        </BoxSWrapper>
+
+        <BtnDeatails>VIEW DETAILS</BtnDeatails>
+      </Deatails>
+    </CardWrapper>
+  );
+};
+
+export default UsersCard;

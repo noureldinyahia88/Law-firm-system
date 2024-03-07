@@ -12,8 +12,9 @@ import lamp from "../../assets/Icon Image.png";
 import { IoIosLogOut } from "react-icons/io";
 
 const SidebarWrapper = styled.div`
-  width: 307px;
-  /* height: 100%; */
+  width: 15%;
+  min-width: 290px;
+  height: 95vh;
   background-color: ${theme.whiteColor};
   padding: 26px;
   border-radius: 15px;
@@ -103,9 +104,9 @@ const Button = styled(NavLink)`
   &:hover {
     color: ${theme.blueColor};
   }
-  /* &.active{
+  &.active{
     color: ${theme.blueColor};
-  } */
+  }
 `;
 const Warrper = styled.div``;
 const Sidebar = () => {
@@ -129,17 +130,17 @@ const Sidebar = () => {
               Dashboard
             </Button>
 
-            <Button to="/" style={{ textDecoration: "none" }}>
+            <Button to="/manageAdmins" style={{ textDecoration: "none" }}>
               <RiStockFill style={{ fontSize: "24px" }} />
               ManageAdmins
             </Button>
 
-            <Button to="/" style={{ textDecoration: "none" }}>
+            <Button to="/manageLawyers" style={{ textDecoration: "none" }}>
               <GoLaw style={{ fontSize: "24px" }} />
               Manage Lawers
             </Button>
 
-            <Button to="/" style={{ textDecoration: "none" }}>
+            <Button to="/manageAssistants" style={{ textDecoration: "none" }}>
               <LuMessagesSquare style={{ fontSize: "24px" }} />
               Manage Lawers Assistants
             </Button>
