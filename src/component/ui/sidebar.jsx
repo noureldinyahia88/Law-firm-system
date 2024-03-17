@@ -10,6 +10,8 @@ import { LuMessagesSquare } from "react-icons/lu";
 import UnionImage from "../../assets/Union.png";
 import lamp from "../../assets/Icon Image.png";
 import { IoIosLogOut } from "react-icons/io";
+import { GoPerson } from "react-icons/go";
+
 
 const SidebarWrapper = styled.div`
   width: 15%;
@@ -84,7 +86,7 @@ const SidebarP = styled.p`
   color: ${theme.blackColor};
   font-size: 14px;
   line-height: 136%;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const Button = styled(NavLink)`
@@ -97,15 +99,17 @@ const Button = styled(NavLink)`
   padding: 16px 20px 16px 20px;
   width: 100%;
   transition: color 0.3s ease;
-  &.dashboard {
-    background-color: ${theme.primaryColor};
-    border-radius: 8px;
-  }
   &:hover {
     color: ${theme.blueColor};
   }
   &.active{
     color: ${theme.blueColor};
+    background-color: ${theme.primaryColor};
+    border-radius: 8px;
+  }
+  &.logout{
+    background-color: transparent;
+    max-width: 30%;
   }
 `;
 const Warrper = styled.div``;
@@ -144,6 +148,11 @@ const Sidebar = () => {
               <LuMessagesSquare style={{ fontSize: "24px" }} />
               Manage Lawers Assistants
             </Button>
+
+            <Button to="/manageAssistants" style={{ textDecoration: "none" }}>
+              <GoPerson style={{ fontSize: "24px" }} />
+              My Profile
+            </Button>
           </TapsWrapper>
         </SidebarTaps>
 
@@ -153,13 +162,11 @@ const Sidebar = () => {
           </Warrper>
           <Sidebarh3>How is your day today!</Sidebarh3>
           <SidebarP>
-            Hope you donig
-            <br />
-            well today.
+            Hope you donig well today.
           </SidebarP>
         </Welcome>
 
-        <Button className="navLink" to="/" style={{ textDecoration: "none" }}>
+        <Button className="navLink logout" to="/" style={{ textDecoration: "none" }}>
           <IoIosLogOut style={{ fontSize: "24px" }} />
           logout
         </Button>

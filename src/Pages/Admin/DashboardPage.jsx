@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
 import styled from "styled-components";
 import Insights from "../../component/AdminComponent/Insights";
 import theme from "../../variables";
-import UserCard from "../../component/AdminComponent/UserCard";
-import arrow from "../../assets/V.png";
+
+import plusImg from "../../assets/plus-square-fill.png";
+import UserCardV2 from "../../component/AdminComponent/UserCardV2";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -20,78 +21,116 @@ const DasdboardContent = styled.div`
   margin: 0 auto;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  height: 90vh;
+  overflow-y: scroll;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+`;
 
 const Container = styled.div`
-  /* width: 1300px; */
-  max-width: 1300px;
+  max-width: 1550px;
   margin: 0 auto;
 `;
 
 const ManageUserWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  padding: 20px;
-  gap: 20px;
-  margin-bottom: 20px;
-`;
-const UsersWrapper = styled.div`
-  position: relative;
   background-color: ${theme.whiteColor};
-  width: 325px;
-  height: 435px;
-  border-radius: 12px;
-  padding: 12px;
-  /* overflow: scroll; */
-`;
-const UsersWrapperHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-const H3 = styled.h3`
-  font-weight: 600;
-  color: ${theme.blackColor};
-  font-size: 14px;
-`;
-const Addbtn = styled.button`
-  background-color: ${theme.blueColor};
-  color: ${theme.whiteColor};
-  font-weight: 400;
-  font-size: 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-const Arrowrapper = styled.div`
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: #e8e9ff;
-  display: grid;
-  place-items: center;
-  position: absolute;
-  bottom: 10px;
-  left: 45%;
-  right: 50%;
-  cursor: pointer;
+  width: 100%;
+  border-radius: 15px;
 `;
 
 const Wrapper = styled.div`
   margin-top: 60px;
+  padding: 20px;
 `;
 
 const H2 = styled.h2`
   font-weight: 700;
-  color: ${theme.blackColor};
+  color: ${theme.blueColor};
   font-size: 24px;
   line-height: 24px;
-  text-align: center;
+  text-align: start;
 `;
-const ArrowImg = styled.img``;
+
+// manage users style
+const HeaderMange = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db;
+  padding: 35px 35px 8px 35px;
+`;
+const TapsWrapper = styled.ul`
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 0;
+`;
+const Li = styled.li`
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  color: ${theme.gray700};
+  cursor: pointer;
+  &.active {
+    color: ${theme.blueColor};
+  }
+`;
+const Border = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: ${theme.blueColor};
+  display: ${(props) => (props.isActive ? "block" : "none")};
+  position: absolute;
+  bottom: -125%;
+`;
+const Button = styled.button`
+  background-color: ${theme.blueColor};
+  color: ${theme.whiteColor};
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+`;
+const PlusIcon = styled.img``;
+const TabContent = styled.div`
+  padding: 20px;
+`;
+
+const UserWrapper = styled.div``;
+const PaginationWrapper = styled.div`
+  margin-top: 40px;
+`;
+const ResultP = styled.p`
+  font-weight: 500;
+  font-size: 16px;
+  color: ${theme.gray700};
+  text-align: start;
+`;
+
 const DashboardPage = () => {
+  const [activeTab, setActiveTab] = useState(1);
+
+  const handleTabClick = (tabNumber) => {
+    setActiveTab(tabNumber);
+  };
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -102,60 +141,91 @@ const DashboardPage = () => {
             <Insights />
             <Wrapper>
               <H2>MANAGE USERS</H2>
+
               <ManageUserWrapper>
-                <UsersWrapper>
-                  <UsersWrapperHeader>
-                    <H3>Admins</H3>
-                    <Addbtn>+</Addbtn>
-                  </UsersWrapperHeader>
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
+                <HeaderMange>
+                  <TapsWrapper>
+                    <Li
+                      className={activeTab === 1 ? "active" : ""}
+                      onClick={() => handleTabClick(1)}
+                    >
+                      Admins
+                      <Border isActive={activeTab === 1} />
+                    </Li>
+                    <Li
+                      className={activeTab === 2 ? "active" : ""}
+                      onClick={() => handleTabClick(2)}
+                    >
+                      Lawyers
+                      <Border isActive={activeTab === 2} />
+                    </Li>
+                    <Li
+                      className={activeTab === 3 ? "active" : ""}
+                      onClick={() => handleTabClick(3)}
+                    >
+                      Clints
+                      <Border isActive={activeTab === 3} />
+                    </Li>
+                  </TapsWrapper>
+                  {activeTab === 1 && (
+                    <Button>
+                      Add New Admin
+                      <PlusIcon src={plusImg} alt="" />
+                    </Button>
+                  )}
 
-                  <Arrowrapper>
-                    <ArrowImg src={arrow} alt="" />
-                  </Arrowrapper>
-                </UsersWrapper>
+                  {activeTab === 2 && (
+                    <Button>
+                      Add New Lawyer
+                      <PlusIcon src={plusImg} alt="" />
+                    </Button>
+                  )}
 
-                <UsersWrapper>
-                  <UsersWrapperHeader>
-                    <H3>Lawyers</H3>
-                    <Addbtn>+</Addbtn>
-                  </UsersWrapperHeader>
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
+                  {activeTab === 3 && (
+                    <Button>
+                      Add New Clint
+                      <PlusIcon src={plusImg} alt="" />
+                    </Button>
+                  )}
+                </HeaderMange>
 
-                  <Arrowrapper>
-                    <ArrowImg src={arrow} alt="" />
-                  </Arrowrapper>
-                </UsersWrapper>
+                <TabContent>
+                  {activeTab === 1 && (
+                    <UserWrapper>
+                      <UserCardV2 />
+                      <UserCardV2 />
+                      <UserCardV2 />
+                      <UserCardV2 />
+                      <UserCardV2 />
+                      <UserCardV2 />
 
-                <UsersWrapper>
-                  <UsersWrapperHeader>
-                    <H3>Lawers Assistants</H3>
-                    <Addbtn>+</Addbtn>
-                  </UsersWrapperHeader>
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
-                  <UserCard />
+                      <PaginationWrapper>
+                        <ResultP>Showing 1 to 813 entries</ResultP>
+                      </PaginationWrapper>
+                    </UserWrapper>
+                  )}
 
-                  <Arrowrapper>
-                    <ArrowImg src={arrow} alt="" />
-                  </Arrowrapper>
-                </UsersWrapper>
+                  {activeTab === 2 && (
+                    <UserWrapper>
+                      <UserCardV2 />
+
+                      <PaginationWrapper>
+                        <ResultP>Showing 1 to 813 entries</ResultP>
+                      </PaginationWrapper>
+                    </UserWrapper>
+                  )}
+
+                  {activeTab === 3 && (
+                    <UserWrapper>
+                      <UserCardV2 />
+                      <UserCardV2 />
+
+                      <PaginationWrapper>
+                        <ResultP>Showing 1 to 813 entries</ResultP>
+                      </PaginationWrapper>
+                    </UserWrapper>
+                  )}
+                </TabContent>
               </ManageUserWrapper>
             </Wrapper>
           </Container>

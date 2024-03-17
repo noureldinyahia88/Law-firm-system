@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import theme from "../../variables";
-import adminvector from "../../assets/Vector.png";
+import adminvector from "../../assets/vectoradmin.png";
+import sinvector from "../../assets/Frame 12262.png";
+import lawvector from "../../assets/Vector3.png";
+import lawAssvector from "../../assets/carbon_ibm-watson-assistant.png";
 
 const InsightsWrapper = styled.div`
   padding: 20px;
@@ -12,7 +15,7 @@ const InsightsWrapper = styled.div`
 
 const InsightsrH2 = styled.h2`
   font-weight: 600;
-  color: ${theme.blackColor};
+  color: ${theme.blueColor};
   font-size: 24px;
   line-height: 24px;
   text-align: start;
@@ -21,21 +24,18 @@ const InsightsrH2 = styled.h2`
 const Vector = styled.img``;
 
 const BoxWrapper = styled.div`
-  background-color: ${theme.whiteColor};
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 5px;
-  padding: 15px;
-  border-radius: 8px;
+  gap: 30px;
 `;
 
 const Box = styled.div`
+  display: flex;
   background-color: #a6daf7;
   padding: 16px 24px;
   border-radius: 8px;
-  height: 116px;
-  width: 209px;
+  height: 140px;
+  width: 300px;
   &.seniorLawyer {
     background-color: #b79bff;
   }
@@ -50,101 +50,85 @@ const Box = styled.div`
 const BoxHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
 `;
 
 const H2 = styled.h2`
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
+  margin: 0;
+  color: ${theme.gray700};
+  text-align: start;
 `;
 
-const BoxContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
-`;
-
-const P = styled.p`
-  font-size: 12px;
-  color: ${theme.blackColor};
-  font-weight: 600;
-  margin-top: 17px;
-`;
+const BoxContent = styled.div``;
 
 const H1Num = styled.h2`
-  font-size: 18px;
-  color: ${theme.blackColor};
+  font-size: 22px;
+  color: ${theme.gray700};
   font-weight: 600;
+  margin: 0;
+  text-align: start;
 `;
 
 const Wrapper = styled.div``;
 const Container = styled.div`
-  /* max-width: 1060px;
-margin: 0 auto; */
+
 `;
 
 const Insights = () => {
   return (
     <InsightsWrapper>
       <Container>
-        <InsightsrH2>INSIGHTS</InsightsrH2>
+        <InsightsrH2>Dashboard</InsightsrH2>
 
         <BoxWrapper>
           <Box>
             <BoxHeader>
-              <H2>Total Admins</H2>
               <Wrapper>
                 <Vector src={adminvector} alt="" />
               </Wrapper>
+              <BoxContent>
+                <H2>Total Admins</H2>
+                <H1Num>10</H1Num>
+              </BoxContent>
             </BoxHeader>
-
-            <BoxContent>
-              <P>Current Value</P>
-              <H1Num>10</H1Num>
-            </BoxContent>
           </Box>
 
           <Box className="seniorLawyer">
             <BoxHeader>
-              <H2>Total Admins</H2>
               <Wrapper>
-                <Vector src={adminvector} alt="" />
+                <Vector src={sinvector} alt="" />
               </Wrapper>
+              <BoxContent>
+                <H2>Total Senior Lawyers</H2>
+                <H1Num>10</H1Num>
+              </BoxContent>
             </BoxHeader>
-
-            <BoxContent>
-              <P>Current Value</P>
-              <H1Num>10</H1Num>
-            </BoxContent>
           </Box>
 
           <Box className="lawyer">
             <BoxHeader>
-              <H2>Total Admins</H2>
               <Wrapper>
-                <Vector src={adminvector} alt="" />
+                <Vector src={lawvector} alt="" />
               </Wrapper>
+              <BoxContent>
+                <H2>Total Lawyers</H2>
+                <H1Num>10</H1Num>
+              </BoxContent>
             </BoxHeader>
-
-            <BoxContent>
-              <P>Current Value</P>
-              <H1Num>10</H1Num>
-            </BoxContent>
           </Box>
 
           <Box className="lawyerAssis">
             <BoxHeader>
-              <H2>Total Admins</H2>
               <Wrapper>
-                <Vector src={adminvector} alt="" />
+                <Vector src={lawAssvector} alt="" />
               </Wrapper>
+              <BoxContent>
+                <H2>Total Lawyers Assistatns</H2>
+                <H1Num>10</H1Num>
+              </BoxContent>
             </BoxHeader>
-
-            <BoxContent>
-              <P>Current Value</P>
-              <H1Num>10</H1Num>
-            </BoxContent>
           </Box>
         </BoxWrapper>
       </Container>

@@ -7,13 +7,13 @@ import useImage from "../../assets/Rectangle 25.png";
 const CardWrapper = styled.div`
   border: 2px solid ${theme.blueColor};
   border-radius: 32px;
-  max-width: 324px;
+  width: 300px;
   padding: 15px;
   margin-top: 12px;
   
-  &:last-child {
+  /* &:last-child {
     margin-bottom: 50px;
-  }
+  } */
 `;
 
 const CardHeader = styled.div`

@@ -11,7 +11,7 @@ const HeaderWrapper = styled.div`
   border-radius: 0 12px 0 0;
 `;
 const Container = styled.div`
-  max-width: 1300px;
+  max-width: 1550px;
   margin: 0 auto;
 `;
 const HeaderContent = styled.div`
@@ -30,16 +30,16 @@ const RightContent = styled.div`
   align-items: center;
   gap: 32px;
 `;
-const SearchInput = styled.input`
-  background-color: #F7F6F9;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  width: 344px;
-  &:focus{
-    outline: none;
-  }
-`;
+// const SearchInput = styled.input`
+//   background-color: #F7F6F9;
+//   border: none;
+//   border-radius: 8px;
+//   padding: 10px;
+//   width: 344px;
+//   &:focus{
+//     outline: none;
+//   }
+// `;
 const Img = styled.img``;
 
 const Header = () => {
@@ -50,7 +50,7 @@ const Header = () => {
           <HeaderH2>Hello Mattio,</HeaderH2>
 
           <RightContent>
-            <SearchInput placeholder="Search within system..." />
+            {/* <SearchInput placeholder="Search within system..." /> */}
 
             <IoMdNotificationsOutline
               style={{ fontSize: "24px", cursor: "pointer" }}
