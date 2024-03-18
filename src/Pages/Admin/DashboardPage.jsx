@@ -7,6 +7,7 @@ import theme from "../../variables";
 
 import plusImg from "../../assets/plus-square-fill.png";
 import UserCardV2 from "../../component/AdminComponent/UserCardV2";
+import { NavLink } from "react-router-dom";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -61,6 +62,7 @@ const H2 = styled.h2`
   font-size: 24px;
   line-height: 24px;
   text-align: start;
+  margin-bottom: 20px;
 `;
 
 // manage users style
@@ -96,7 +98,7 @@ const Border = styled.div`
   position: absolute;
   bottom: -125%;
 `;
-const Button = styled.button`
+const Button = styled(NavLink)`
   background-color: ${theme.blueColor};
   color: ${theme.whiteColor};
   font-size: 15px;
@@ -107,6 +109,7 @@ const Button = styled.button`
   gap: 10px;
   padding: 10px;
   cursor: pointer;
+  text-decoration: none;
 `;
 const PlusIcon = styled.img``;
 const TabContent = styled.div`
@@ -168,14 +171,14 @@ const DashboardPage = () => {
                     </Li>
                   </TapsWrapper>
                   {activeTab === 1 && (
-                    <Button>
+                    <Button to="/AddAdminPage">
                       Add New Admin
                       <PlusIcon src={plusImg} alt="" />
                     </Button>
                   )}
 
                   {activeTab === 2 && (
-                    <Button>
+                    <Button to="/AddLawer">
                       Add New Lawyer
                       <PlusIcon src={plusImg} alt="" />
                     </Button>

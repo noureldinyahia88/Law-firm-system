@@ -19,6 +19,7 @@ const InsightsrH2 = styled.h2`
   font-size: 24px;
   line-height: 24px;
   text-align: start;
+  margin-bottom: 20px;
 `;
 
 const Vector = styled.img``;
@@ -72,9 +73,7 @@ const H1Num = styled.h2`
 `;
 
 const Wrapper = styled.div``;
-const Container = styled.div`
-
-`;
+const Container = styled.div``;
 
 const Insights = () => {
   return (
