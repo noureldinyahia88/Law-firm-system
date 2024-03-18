@@ -75,11 +75,7 @@ const ImgBox = styled.div`
   flex-direction: column;
   gap: 25px;
 `;
-const H3 = styled.h3`
-  font-size: 24px;
-  font-weight: 600;
-  color: ${theme.whiteColor};
-`;
+
 const MyImg = styled.img`
   max-width: 150px;
   max-height: 150px;
@@ -129,11 +125,7 @@ const DetlWrapper = styled.div`
   gap: 30px;
   margin-bottom: 15px;
 `;
-const P = styled.p`
-  color: #1f2937;
-  font-size: 14px;
-  font-weight: 600;
-`;
+
 const P2 = styled.p`
   color: #6b7280;
   font-size: 14px;
@@ -268,7 +260,7 @@ const PageWrapperForm = styled.div`
   height: 100%;
   overflow: hidden;
   display: none;
-  &.show{
+  &.show {
     display: block;
   }
 `;
@@ -310,7 +302,7 @@ const MyProfile = () => {
 
   const showForm = () => {
     setShowUpdateForm(!showUpdateForm);
-  }
+  };
 
   return (
     <PageWrapper>
