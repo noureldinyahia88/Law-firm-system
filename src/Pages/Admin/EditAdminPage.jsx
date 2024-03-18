@@ -151,17 +151,6 @@ const FormInput = styled.input`
   }
 `;
 
-const FormCheck = styled.div`
-  width: 30%;
-  display: flex;
-  gap: 10px;
-`;
-const CheckLabel = styled.label`
-  font-size: 16px;
-  font-weight: 600;
-`;
-const FormInputCheckbox = styled.input``;
-
 const BtnsWrapper = styled.div`
   display: flex;
   align-self: flex-start;
@@ -200,7 +189,7 @@ const Span = styled.span`
   padding: 0 5px 5px 5px;
 `;
 
-const AddAdminPage = () => {
+const EditAdminPage = () => {
   const {
     register,
     handleSubmit,
@@ -227,7 +216,7 @@ const AddAdminPage = () => {
             </Button>
 
             <Form onSubmit={handleSubmit()}>
-              <H3>Add Admin</H3>
+              <H3>Edit Admin</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
               </P>
@@ -327,11 +316,6 @@ const AddAdminPage = () => {
                     <StyledEyeSlashIcon onClick={showPassFun} />
                     <Span>{errors.password?.message}</Span>
                   </FormRow>
-
-                  <FormCheck>
-                    <FormInputCheckbox type="checkbox" />
-                    <CheckLabel>Check if global</CheckLabel>
-                  </FormCheck>
                 </InputWrapper>
                 <InputWrapper>
                   <FormRow>
@@ -407,4 +391,4 @@ const AddAdminPage = () => {
   );
 };
 
-export default AddAdminPage;
+export default EditAdminPage;

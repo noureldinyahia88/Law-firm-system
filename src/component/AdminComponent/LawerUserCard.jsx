@@ -11,7 +11,7 @@ const CardWrapper = styled.div`
   width: 300px;
   padding: 15px;
   margin-top: 12px;
-  
+
   /* &:last-child {
     margin-bottom: 50px;
   } */
@@ -71,31 +71,30 @@ const OptionsWrapper = styled.div`
   border-radius: 8px;
   gap: 10px;
   transition: display 0.5s ease;
-  &.show{
-  display: flex;
+  &.show {
+    display: flex;
   }
-
 `;
 
 const Btn = styled.button`
-transition: color 0.5s ease;
-font-weight: 600;
-background-color: transparent;
-border: none;
-cursor: pointer;
-  &:hover{
+  transition: color 0.5s ease;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover {
     color: ${theme.blueColor};
   }
 `;
 
 const Btn2 = styled(NavLink)`
-transition: color 0.5s ease;
-font-weight: 600;
-background-color: transparent;
-border: none;
-cursor: pointer;
-text-decoration: none;
-  &:hover{
+  transition: color 0.5s ease;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
     color: ${theme.blueColor};
   }
 `;
@@ -154,12 +153,12 @@ const BtnDeatails = styled.button`
   font-weight: bold;
   cursor: pointer;
 `;
-const UsersCard = () => {
 
-    const [showOptions, setShowOptions] = useState(false)
-    const showOptionsWrapper = () => {
-        setShowOptions(!showOptions)
-    }
+const LawerUserCard = () => {
+  const [showOptions, setShowOptions] = useState(false);
+  const showOptionsWrapper = () => {
+    setShowOptions(!showOptions);
+  };
   return (
     <CardWrapper>
       <CardHeader>
@@ -175,8 +174,8 @@ const UsersCard = () => {
 
         <BtsCard onClick={showOptionsWrapper}>
           <TfiMoreAlt style={{ color: "#D9D9D9", fontSize: "24px" }} />
-          <OptionsWrapper className={`${showOptions ? 'show': ''}`}>
-            <Btn2 to="/EditAdmin">Edit</Btn2>
+          <OptionsWrapper className={`${showOptions ? "show" : ""}`}>
+            <Btn2 to="/EditLawer">Edit</Btn2>
             <Btn>Delete</Btn>
           </OptionsWrapper>
         </BtsCard>
@@ -232,4 +231,4 @@ const UsersCard = () => {
   );
 };
 
-export default UsersCard;
+export default LawerUserCard;

@@ -6,6 +6,8 @@ import Sidebar from "../../component/ui/sidebar";
 import theme from "../../variables";
 import plusImg from "../../assets/plus-square-fill.png";
 import UsersCard from "../../component/AdminComponent/UsersCard";
+import LawerUserCard from "../../component/AdminComponent/LawerUserCard";
+import { NavLink } from "react-router-dom";
 
 const Container = styled.div`
   max-width: 1550px;
@@ -73,7 +75,7 @@ const SearchInput = styled.input`
     outline: none;
   }
 `;
-const Button = styled.button`
+const Button = styled(NavLink)`
   background-color: ${theme.blueColor};
   color: ${theme.whiteColor};
   font-size: 15px;
@@ -83,6 +85,7 @@ const Button = styled.button`
   align-items: center;
   gap: 10px;
   padding: 10px;
+  text-decoration: none;
   cursor: pointer;
 `;
 const PlusIcon = styled.img``;
@@ -116,46 +119,46 @@ const ResultP = styled.p`
 const ManageLawyers = () => {
   return (
     <PageWrapper>
-    <Sidebar />
-    <ManageLawyersWrapper>
-      <Header />
-      <Container>
-        <Wrapper>
-          <H2>Manage Lawers</H2>
-          <ContentHeader>
-            <SearchWrapper>
-              <IoSearch />
-              <SearchInput
-                type="text"
-                placeholder="Search for a lawer 'id or email' ?"
-              />
-            </SearchWrapper>
-            <BtnsWrapper>
-              <Button>
-                Add New Lawer
-                <PlusIcon src={plusImg} alt="" />
-              </Button>
-            </BtnsWrapper>
-          </ContentHeader>
+      <Sidebar />
+      <ManageLawyersWrapper>
+        <Header />
+        <Container>
+          <Wrapper>
+            <H2>Manage Lawers</H2>
+            <ContentHeader>
+              <SearchWrapper>
+                <IoSearch />
+                <SearchInput
+                  type="text"
+                  placeholder="Search for a lawer 'id or email' ?"
+                />
+              </SearchWrapper>
+              <BtnsWrapper>
+                <Button to="/AddLawer">
+                  Add New Lawer
+                  <PlusIcon src={plusImg} alt="" />
+                </Button>
+              </BtnsWrapper>
+            </ContentHeader>
 
-          <ManageLawyerContent>
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
-            <UsersCard />
+            <ManageLawyerContent>
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
+              <LawerUserCard />
 
-            <PaginationWrapper>
-              <ResultP>Showing 1 to 813 entries</ResultP>
-            </PaginationWrapper>
-          </ManageLawyerContent>
-        </Wrapper>
-      </Container>
-    </ManageLawyersWrapper>
-  </PageWrapper>
+              <PaginationWrapper>
+                <ResultP>Showing 1 to 813 entries</ResultP>
+              </PaginationWrapper>
+            </ManageLawyerContent>
+          </Wrapper>
+        </Container>
+      </ManageLawyersWrapper>
+    </PageWrapper>
   );
 };
 

@@ -150,7 +150,6 @@ const FormInput = styled.input`
     outline: none;
   }
 `;
-
 const FormCheck = styled.div`
   width: 30%;
   display: flex;
@@ -200,7 +199,7 @@ const Span = styled.span`
   padding: 0 5px 5px 5px;
 `;
 
-const AddAdminPage = () => {
+const AddLawerPage = () => {
   const {
     register,
     handleSubmit,
@@ -221,13 +220,13 @@ const AddAdminPage = () => {
         <Header />
         <Wrapper>
           <Container>
-            <Button to="/manageAdmins">
+            <Button to="/manageLawyers">
               <ArrowIcon src={arrow} alt="" />
-              Back to Manage Admins
+              Back to Manage Lawyers
             </Button>
 
             <Form onSubmit={handleSubmit()}>
-              <H3>Add Admin</H3>
+              <H3>Add Lawyer</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
               </P>
@@ -308,6 +307,25 @@ const AddAdminPage = () => {
                   </FormRow>
 
                   <FormRow>
+                    <FormLabel>Law Type</FormLabel>
+                    <FormInput
+                      type="text"
+                      placeholder="EX: Value"
+                      id="lawType"
+                      {...register("lawType", {
+                        required:
+                          "Please Enter Valid Law Type Not Contain Space And not leave Empty",
+                        pattern: {
+                          value: /^[a-zA-Z]+$/,
+                          message:
+                            "Please Enter Valid Law Type Not Contain Space And not leave Empty",
+                        },
+                      })}
+                    />
+                    <Span>{errors.lawType?.message}</Span>
+                  </FormRow>
+
+                  <FormRow>
                     <FormLabel>Password</FormLabel>
                     <FormInput
                       type={`${showPass ? "text" : "password"}`}
@@ -330,7 +348,7 @@ const AddAdminPage = () => {
 
                   <FormCheck>
                     <FormInputCheckbox type="checkbox" />
-                    <CheckLabel>Check if global</CheckLabel>
+                    <CheckLabel>Check if senior</CheckLabel>
                   </FormCheck>
                 </InputWrapper>
                 <InputWrapper>
@@ -372,6 +390,25 @@ const AddAdminPage = () => {
 
                   <FormRow>
                     <FormLabel className="confirmPass">
+                      Experience Years
+                    </FormLabel>
+                    <FormInput
+                      type="number"
+                      placeholder="Enter Experience Years"
+                      id="experienceYears"
+                      {...register("experienceYears", {
+                        required: "Please Enter Valid Experience Years",
+                        min: {
+                          value: 0,
+                          message: "Please Enter Valid Experience Years",
+                        },
+                      })}
+                    />
+                    <Span>{errors.experienceYears?.message}</Span>
+                  </FormRow>
+
+                  <FormRow>
+                    <FormLabel className="confirmPass">
                       Confirm Password{" "}
                     </FormLabel>
                     <FormInput
@@ -407,4 +444,4 @@ const AddAdminPage = () => {
   );
 };
 
-export default AddAdminPage;
+export default AddLawerPage;

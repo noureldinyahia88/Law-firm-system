@@ -149,7 +149,7 @@ const Sidebar = () => {
               Manage Lawers Assistants
             </Button>
 
-            <Button to="/manageAssistants" style={{ textDecoration: "none" }}>
+            <Button to="/MyProfile" style={{ textDecoration: "none" }}>
               <GoPerson style={{ fontSize: "24px" }} />
               My Profile
             </Button>
