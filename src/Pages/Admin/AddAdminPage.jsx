@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
 import theme from "../../variables";
 import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
+import { FaEyeSlash } from "react-icons/fa";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -40,7 +41,172 @@ const Button = styled(NavLink)`
 
 const ArrowIcon = styled.img``;
 
+// form style
+
+const Form = styled.form`
+  padding: 30px;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid ${theme.blueColor};
+  border-radius: 20px;
+`;
+const H3 = styled.h3`
+  font-size: 24px;
+  font-weight: 600;
+  color: #363939;
+`;
+const P = styled.p`
+  color: #797a7b;
+  font-size: 14px;
+  margin-top: 15px;
+`;
+const AddImageWrapper = styled.div`
+  margin-top: 15px;
+  position: relative;
+  background-color: #d1d5db;
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: ${theme.blueColor};
+  gap: 5px;
+`;
+const PImg = styled.p`
+  font-weight: 600;
+  font-size: 14px;
+`;
+const PlusDiv = styled.input`
+  position: absolute;
+  bottom: 27%;
+  opacity: 0;
+  background-color: ${theme.blueColor};
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: ${theme.whiteColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+`;
+const PlusDiv2 = styled.div`
+  background-color: ${theme.blueColor};
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: ${theme.whiteColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+const InputsWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 30px;
+  margin-top: 30px;
+`;
+const InputWrapper = styled.div`
+  width: 50%;
+`;
+
+const FormRow = styled.div`
+position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  border: 2px solid #6b7280;
+  border-radius: 10px;
+  margin-bottom: 30px;
+`;
+const FormLabel = styled.label`
+  margin-top: -10px;
+  margin-left: 15px;
+  background-color: #f7f6f9;
+  width: 15%;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${theme.blueColor};
+  &.confirmPass {
+    width: 27%;
+  }
+  &.email {
+    width: 9%;
+  }
+`;
+const FormInput = styled.input`
+  background-color: transparent;
+  border: none;
+  padding: 14px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const FormCheck = styled.div`
+  width: 30%;
+  display: flex;
+  gap: 10px;
+`;
+const CheckLabel = styled.label`
+  font-size: 16px;
+  font-weight: 600;
+`;
+const FormInputCheckbox = styled.input``;
+
+// FormInputCheckbox.defaultProps = {
+//     x: {
+//       borderColor: '', // blue color for the border
+//       textColor: '#000', // default text color
+//     },
+//   };
+
+const BtnsWrapper = styled.div`
+display: flex;
+align-self: flex-start;
+gap: 20px;
+margin-top: 30px;
+`;
+const Button2 = styled.button`
+  background-color: ${theme.blueColor};
+  color: ${theme.whiteColor};
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  &.gray {
+    background-color: #d1d5db;
+    color: #374151;
+  }
+`;
+
+const StyledEyeSlashIcon = styled(FaEyeSlash)`
+  position: absolute;
+  right: 2%;
+  top: 41%;
+  color:#374151;
+  cursor: pointer;
+`;
+
 const AddAdminPage = () => {
+
+    const [showPass, setShowPass] = useState(false);
+    const showPassFun = () => {
+        setShowPass(!showPass);
+    }
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -54,7 +220,67 @@ const AddAdminPage = () => {
             </Button>
 
             <Form>
-                
+              <H3>Add Admin</H3>
+              <P>
+                Add a photo so other members <br /> know who you are.
+              </P>
+              <AddImageWrapper>
+                <PImg>Add Photo</PImg>
+                <PlusDiv type="file" />
+                <PlusDiv2>+</PlusDiv2>
+              </AddImageWrapper>
+
+              <InputsWrapper>
+                <InputWrapper>
+                  <FormRow>
+                    <FormLabel>First Name</FormLabel>
+                    <FormInput type="text" placeholder="EX: JHONAS" />
+                  </FormRow>
+
+                  <FormRow>
+                    <FormLabel className="email">Email</FormLabel>
+                    <FormInput
+                      type="email"
+                      placeholder="EX: Example@gmail.com"
+                    />
+                  </FormRow>
+
+                  <FormRow>
+                    <FormLabel>Password</FormLabel>
+                    <FormInput type={`${showPass ? 'text': 'password'}`} placeholder="0216a5416qasdq" />
+                    <StyledEyeSlashIcon onClick={showPassFun} />
+                  </FormRow>
+
+                  <FormCheck>
+                    <FormInputCheckbox type="checkbox" />
+                    <CheckLabel>Check if global</CheckLabel>
+                  </FormCheck>
+                </InputWrapper>
+                <InputWrapper>
+                  <FormRow>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormInput type="text" placeholder="EX: JHONAS" />
+                  </FormRow>
+
+                  <FormRow>
+                    <FormLabel>Number</FormLabel>
+                    <FormInput type="nmber" placeholder="0211581385" />
+                  </FormRow>
+
+                  <FormRow>
+                    <FormLabel className="confirmPass">
+                      Confirm Password{" "}
+                    </FormLabel>
+                    <FormInput type={`${showPass ? 'text': 'password'}`}   placeholder="0216a5416qasdq" />
+                    <StyledEyeSlashIcon onClick={showPassFun} />
+                  </FormRow>
+                </InputWrapper>
+              </InputsWrapper>
+
+              <BtnsWrapper>
+                <Button2>Submit</Button2>
+                <Button2 className="gray">Cancel</Button2>
+              </BtnsWrapper>
             </Form>
           </Container>
         </Wrapper>
