@@ -185,7 +185,7 @@ const DashboardPage = () => {
                   )}
 
                   {activeTab === 3 && (
-                    <Button>
+                    <Button to="/addNewClient">
                       Add New Clint
                       <PlusIcon src={plusImg} alt="" />
                     </Button>
