@@ -3,14 +3,16 @@ import styled from "styled-components";
 import img from "../assets/loginImage.png";
 import theme from "../variables";
 import { useForm } from "react-hook-form";
-import { FaEyeSlash } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { LoginFun } from "../component/Https/Login";
 
 const LoginPage = styled.div`
   background-color: #f7f6f9;
   width: 100%;
   height: 100vh;
   background-image: url(${img});
-  background-size: center; 
+  background-size: center;
   background-position: right;
   background-repeat: no-repeat;
 `;
@@ -23,30 +25,19 @@ const LoginWrapper = styled.div`
   padding-left: 100px;
 `;
 
-
 const H1 = styled.h1`
-font-size: 43px;
-font-weight: 600;
-margin-bottom: 20px;
+  font-size: 43px;
+  font-weight: 600;
+  margin-bottom: 20px;
 `;
 
 const P = styled.p`
-font-size: 35px;
-font-weight: 500;
-margin-bottom: 20px;
+  font-size: 35px;
+  font-weight: 500;
+  margin-bottom: 20px;
 `;
 
 const Form = styled.form``;
-
-const InputsWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 30px;
-  margin-top: 30px;
-`;
-const InputWrapper = styled.div`
-  width: 50%;
-`;
 
 const FormRow = styled.div`
   position: relative;
@@ -88,6 +79,43 @@ const Span = styled.span`
   font-weight: 500;
   padding: 0 5px 5px 5px;
 `;
+const Button = styled.button`
+  background-color: ${theme.blueColor};
+  color: ${theme.whiteColor};
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+`;
+const Button2 = styled(NavLink)`
+  color: ${theme.blueColor};
+  font-size: 15px;
+  cursor: pointer;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const FormCheck = styled.div`
+  width: 30%;
+  display: flex;
+  gap: 10px;
+`;
+const CheckLabel = styled.label`
+  font-size: 16px;
+  font-weight: 600;
+`;
+const FormInputCheckbox = styled.input``;
 
 const Login = () => {
   const {
@@ -98,13 +126,47 @@ const Login = () => {
     getValues,
   } = useForm();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: LoginFun,
+    onSuccess: (data) => {
+      // to refetch the data
+      QueryClient.invalidateQueries({ queryKey: ['data'] });
+      console.log("success");
+      console.log(data);
+  
+      // const decodedToken = jwtDecode(data);
+  
+      // setProfileType(decodedToken.role[0]);
+      // localStorage.setItem('token', data);
+      // localStorage.setItem('profileType', decodedToken.role[0]);
+  
+      // if (decodedToken.role[0] === "ROLE_GLOBAL_ADMIN") {
+      //   navigate('/manageProjects');
+      // } else if (decodedToken.role[0] === "ROLE_PROJECT_MANAGER") {
+      //   navigate('/manageProjectsPM');
+      // } else if (decodedToken.role[0] === "ROLE_EMPLOYEE") {
+      //   navigate('/manageTaskEmplyee');
+      // }
+  
+      // console.log(decodedToken.role[0]);
+    },
+  });
+
+async function handleSubmitLogin(formData){
+mutate({
+  email: formData.email,
+  password: formData.password,
+})
+
+}
+
   return (
     <LoginPage>
       <LoginWrapper>
         <H1>Welcome To Our Law Firm System</H1>
         <P>You Are Unique With Us</P>
 
-        <Form>
+        <Form onSubmit={handleSubmit(handleSubmitLogin)}>
           <FormRow>
             <FormLabel className="email">Email</FormLabel>
             <FormInput
@@ -140,11 +202,17 @@ const Login = () => {
             />
             <Span>{errors.password?.message}</Span>
           </FormRow>
+          <Wrapper>
+            <FormCheck>
+              <FormInputCheckbox type="checkbox" />
+              <CheckLabel>remember me</CheckLabel>
+            </FormCheck>
+
+            <Button2>Forget Your password ?</Button2>
+          </Wrapper>
+          <Button>Login</Button>
         </Form>
       </LoginWrapper>
-      {/* <ImgBox>
-        <Img src={img} alt="" />
-      </ImgBox> */}
     </LoginPage>
   );
 };

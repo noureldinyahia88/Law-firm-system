@@ -7,6 +7,8 @@ import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { createAdmin } from "../../component/Https/dashboard";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -214,6 +216,44 @@ const AddAdminPage = () => {
     setShowPass(!showPass);
   };
 
+
+  // add a new admin
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNo: "",
+    isGlobal: "true",
+    role:"",
+    confirmPass:"",
+  });
+
+  const handleInput2 = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const { mutate, isPending , isError, error} = useMutation({
+    mutationFn: createAdmin,
+    onSuccess: (data) => {
+      QueryClient.invalidateQueries({ queryKey: ["admins"] });
+      console.log("success");
+      console.log(data);
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  function handleSubmitAddNewProject(data) {
+  // const {confirmPass, ...formData} = data
+  console.log("ffd",data);
+    mutate(data);
+    console.error("Mutation error:", error);
+  }
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -226,7 +266,7 @@ const AddAdminPage = () => {
               Back to Manage Admins
             </Button>
 
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitAddNewProject)}>
               <H3>Add Admin</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
@@ -234,7 +274,7 @@ const AddAdminPage = () => {
               <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                <PlusDiv
+                {/* <PlusDiv
                   type="file"
                   {...register("image", {
                     required: "Please upload a valid image file",
@@ -255,11 +295,11 @@ const AddAdminPage = () => {
                     },
                   })}
                   accept=".jpg, .jpeg, .png"
-                />
-                <PlusDiv2>+</PlusDiv2>
+                /> */}
+                {/* <PlusDiv2>+</PlusDiv2> */}
               </AddImageWrapper>
 
-              {errors.image && errors.image.type === "required" && (
+              {/* {errors.image && errors.image.type === "required" && (
                 <Span>Please upload a valid image file</Span>
               )}
               {errors.image && errors.image.type === "validExtension" && (
@@ -267,7 +307,7 @@ const AddAdminPage = () => {
               )}
               {errors.image && errors.image.type === "validSize" && (
                 <Span>Image size should not exceed 3 MB</Span>
-              )}
+              )} */}
 
               <InputsWrapper>
                 <InputWrapper>
@@ -286,6 +326,8 @@ const AddAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      onChange={handleInput2}
+                      value={formData.firstName}
                     />
                     <Span>{errors.firstName?.message}</Span>
                   </FormRow>
@@ -303,6 +345,8 @@ const AddAdminPage = () => {
                           message: "Please Enter Valid email",
                         },
                       })}
+                      onChange={handleInput2}
+                      value={formData.email}
                     />
                     <Span>{errors.email?.message}</Span>
                   </FormRow>
@@ -323,13 +367,23 @@ const AddAdminPage = () => {
                             "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
                         },
                       })}
+                      onChange={handleInput2}
+                      value={formData.password}
                     />
                     <StyledEyeSlashIcon onClick={showPassFun} />
                     <Span>{errors.password?.message}</Span>
                   </FormRow>
 
                   <FormCheck>
-                    <FormInputCheckbox type="checkbox" />
+                    <FormInputCheckbox 
+                    type="checkbox"
+                    name="isGlobal"
+                    id="isGlobal"
+                    {...register("isGlobal", {
+                      // required:
+                      //   "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
+                    })}
+                     onChange={handleInput2} value={formData.isGlobal} />
                     <CheckLabel>Check if global</CheckLabel>
                   </FormCheck>
                 </InputWrapper>
@@ -349,6 +403,8 @@ const AddAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      onChange={handleInput2}
+                      value={formData.lastName}
                     />
                     <Span>{errors.lastName?.message}</Span>
                   </FormRow>
@@ -361,11 +417,13 @@ const AddAdminPage = () => {
                       id="phoneNo"
                       {...register("phoneNo", {
                         required: "Please Enter Valid phoneNo",
-                        pattern: {
-                          value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                          message: "Please Enter Valid phoneNo",
-                        },
+                        // pattern: {
+                        //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                        //   message: "Please Enter Valid phoneNo",
+                        // },
                       })}
+                      onChange={handleInput2}
+                      value={formData.phoneNo}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
                   </FormRow>
@@ -378,7 +436,7 @@ const AddAdminPage = () => {
                       type={`${showPass ? "text" : "password"}`}
                       placeholder="0216a5416qasdq"
                       id="confirmPass"
-                      {...register("confirmPassword", {
+                      {...register("confirmPass", {
                         required: "Confirm Password is required",
                         validate: {
                           matchesPassword: (value) =>

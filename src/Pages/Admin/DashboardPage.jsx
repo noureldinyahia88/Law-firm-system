@@ -8,6 +8,9 @@ import theme from "../../variables";
 import plusImg from "../../assets/plus-square-fill.png";
 import UserCardV2 from "../../component/AdminComponent/UserCardV2";
 import { NavLink } from "react-router-dom";
+import { fetchAdmins } from "../../component/Https/dashboard";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../component/ui/Loading";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -134,6 +137,46 @@ const DashboardPage = () => {
     setActiveTab(tabNumber);
   };
 
+  // const data = fetchAdmins();
+  // console.log(data);
+// get Admins
+const { data, isLoading, isError, error } = useQuery({
+  queryKey: ['admins'],
+  queryFn:  fetchAdmins,
+  staleTime: 5000,
+});
+
+let content;
+
+if (isLoading) {
+  content = <Loading />;
+
+  console.log("load",content);
+}
+
+if (isError) {
+  content = <h1>{error.info?.message}</h1>;
+  console.log("err",content);
+  console.log(error);
+}
+
+if (data) {
+  content = data.map((event) => (
+    <UserCardV2 
+    key={event.id}
+    id={event.id}
+    firstName={event.firstName}
+    lastName={event.lastName}
+    email={event.email}
+    role={event.role}
+    active={event.active}
+    global={event.global}
+     />
+  ));
+  console.log("data",content);
+
+}
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -195,12 +238,7 @@ const DashboardPage = () => {
                 <TabContent>
                   {activeTab === 1 && (
                     <UserWrapper>
-                      <UserCardV2 />
-                      <UserCardV2 />
-                      <UserCardV2 />
-                      <UserCardV2 />
-                      <UserCardV2 />
-                      <UserCardV2 />
+                      {content}
 
                       <PaginationWrapper>
                         <ResultP>Showing 1 to 813 entries</ResultP>

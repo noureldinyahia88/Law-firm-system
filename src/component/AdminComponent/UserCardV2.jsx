@@ -59,7 +59,7 @@ const Button = styled.button`
   }
 `;
 
-const UserCardV2 = () => {
+const UserCardV2 = ({firstName, lastName, email, role, active, global}) => {
   return (
     <UserCardV2Wrapper>
       <UserDeatailsWrapper>
@@ -67,8 +67,8 @@ const UserCardV2 = () => {
           <Img src={userImg} alt="" />
         </Wrapper>
         <UserName>
-          <H3>Jacob Jones</H3>
-          <P>Admin</P>
+          <H3>{firstName}</H3>
+          <P>{role}</P>
         </UserName>
       </UserDeatailsWrapper>
 
