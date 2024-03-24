@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../component/ui/Header";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
@@ -8,6 +8,10 @@ import theme from "../../variables";
 
 import UsersCard from "../../component/AdminComponent/UsersCard";
 import plusImg from "../../assets/plus-square-fill.png";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAdmins } from "../../component/Https/dashboard";
+import Loading from "../../component/ui/Loading";
+import NotFoundUi from "../../component/ui/NotFoundUi";
 
 const Container = styled.div`
   max-width: 1550px;
@@ -118,6 +122,52 @@ const ResultP = styled.p`
 `;
 
 const ManageAdmins = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["admins"],
+    queryFn: fetchAdmins,
+    staleTime: 5000,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = <Loading />;
+    console.log("load", content);
+  }
+
+  if (isError) {
+    content = <h1>{error.info?.message}</h1>;
+    console.log("err", content);
+    console.log(error);
+  }
+
+  if (data) {
+    // Filter data based on search query
+    const filteredData = data.filter((event) => {
+      return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  
+    if (filteredData.length === 0) {
+      content = <NotFoundUi>Not Found</NotFoundUi>;
+    } else {
+      content = filteredData.map((event) => (
+        <UsersCard
+          key={event.id}
+          id={event.id}
+          firstName={event.firstName}
+          lastName={event.lastName}
+          email={event.email}
+          role={event.role}
+          active={event.active}
+          global={event.global}
+          phoneNo={event.phoneNo}
+          createdAt={event.createdAt}
+        />
+      ));
+    }
+  }
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -131,7 +181,9 @@ const ManageAdmins = () => {
                 <IoSearch />
                 <SearchInput
                   type="text"
-                  placeholder="Search for a admin 'id or email' ?"
+                  placeholder="Search for an admin 'id or email'?"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </SearchWrapper>
               <BtnsWrapper>
@@ -143,14 +195,7 @@ const ManageAdmins = () => {
             </ContentHeader>
 
             <ManageLawyerContent>
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
-              <UsersCard />
+              {content}
 
               <PaginationWrapper>
                 <ResultP>Showing 1 to 813 entries</ResultP>

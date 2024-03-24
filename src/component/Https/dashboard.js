@@ -1,13 +1,62 @@
+import { QueryClient } from "@tanstack/react-query";
+const queryClient = new QueryClient();
+export { queryClient }
+
+
 // get admins
 export async function fetchAdmins() {
   let url = "http://3.125.116.109:8080/admin-api/admins";
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE3ODQ3NjcsInN1YiI6IjciLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4iLCJpbWFnZSI6InVzZXIuanBnIiwicm9sZSI6WyJST0xFX0FETUlOIl19.Ve5y5p3nOqus9OQ0fca8NNYOZK-Du89RLcjtPuwQmBo";
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (!response.ok) {
+      // Handle non-successful responses here
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    // Handle other errors here
+    throw error;
+  }
+}
+// get Lawers
+export async function fetchLawers() {
+  let url = "http://3.125.116.109:8080/admin-api/lawyers/all";
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (!response.ok) {
+      // Handle non-successful responses here
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    // Handle other errors here
+    throw error;
+  }
+}
+// get clients
+export async function fetchClients() {
+  let url = "http://3.125.116.109:8080/admin-api/clients";
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
 
@@ -24,44 +73,79 @@ export async function fetchAdmins() {
   }
 }
 
+
+// delete Admin
+export async function deleteAdmin({ id }) {
+  const response = await fetch(`http://3.125.116.109:8080/admin-api/admins/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error('An error occurred while deleting the event');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return response.json();
+}
+
 // create a new admin
-export async function createAdmin(projectData) {
-  console.log(projectData);
-  const newData = new FormData();
-  newData.append("firstName", projectData.firstName);
-  newData.append("lastName", projectData.lastName);
-  newData.append("email", projectData.email);
-  newData.append("password", projectData.password);
-  newData.append("phoneNo", projectData.phoneNo);
-  newData.append("isGlobal", projectData.isGlobal);
-  newData.append("role", projectData.role);
-  console.log("newData",newData);
+export async function createAdmin(formData) {
+  // console.log("sss",projectData);
+
+  // console.log(newFormData);
+  // try {
+  //   const response = await fetch(`http://3.125.116.109:8080/admin-api/admins`, {
+  //     method: 'POST',
+  //     body: projectData,
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //       'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+  //     },
+  //   });
+    
+
+  //   if (!response.status === 200) {
+  //     const error = new Error('An error occurred while creating the project');
+  //     error.code = response.status;
+  //     error.info = await response.json();
+  //     console.error('Error:', error);
+  //     throw error;
+  //   }
+
+  //   return response.json();
+  // } catch (error) {
+  //   console.error('Unexpected error:', error);
+  //   throw error;
+  // }
+
   try {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE3ODQ3NjcsInN1YiI6IjciLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4iLCJpbWFnZSI6InVzZXIuanBnIiwicm9sZSI6WyJST0xFX0FETUlOIl19.Ve5y5p3nOqus9OQ0fca8NNYOZK-Du89RLcjtPuwQmBo";
     const response = await fetch(`http://3.125.116.109:8080/admin-api/admins`, {
-      method: "POST",
-      body: newData,
+      method: 'POST',
+      body: formData, // Pass FormData directly as the body
       headers: {
-        // "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        // No need to set Content-Type for FormData, it will be automatically set
+        'Authorization': `Bearer ${localStorage.getItem('token')}`, 
       },
     });
 
-    if (response.status !== 200) {
-      const error = new Error("An error occurred while creating the project");
+    if (!response.ok) {
+      const error = new Error('An error occurred while creating the admin');
       error.code = response.status;
-      error.info = await response.json().catch(() => null); // Handle non-JSON responses
-      console.error("Error:", error);
+      error.info = await response.json();
+      console.error('Error:', error);
       throw error;
     }
 
-    const { newproject } = await response.json();
-
-    console.log(projectData);
-    return newproject;
+    return response.json();
   } catch (error) {
-    console.error("Unexpected error:", error);
+    console.error('Unexpected error:', error);
     throw error;
   }
 }
+

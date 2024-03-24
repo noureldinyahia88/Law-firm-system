@@ -11,7 +11,7 @@ const CardWrapper = styled.div`
   width: 300px;
   padding: 15px;
   margin-top: 12px;
-  
+
   /* &:last-child {
     margin-bottom: 50px;
   } */
@@ -71,31 +71,30 @@ const OptionsWrapper = styled.div`
   border-radius: 8px;
   gap: 10px;
   transition: display 0.5s ease;
-  &.show{
-  display: flex;
+  &.show {
+    display: flex;
   }
-
 `;
 
 const Btn = styled.button`
-transition: color 0.5s ease;
-font-weight: 600;
-background-color: transparent;
-border: none;
-cursor: pointer;
-  &:hover{
+  transition: color 0.5s ease;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover {
     color: ${theme.blueColor};
   }
 `;
 
 const Btn2 = styled(NavLink)`
-transition: color 0.5s ease;
-font-weight: 600;
-background-color: transparent;
-border: none;
-cursor: pointer;
-text-decoration: none;
-  &:hover{
+  transition: color 0.5s ease;
+  font-weight: 600;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
     color: ${theme.blueColor};
   }
 `;
@@ -143,23 +142,22 @@ const H3 = styled.h3`
   font-size: 16px;
   font-weight: 600;
 `;
-const BtnDeatails = styled.button`
-  background-color: ${theme.blueColor};
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  margin-top: 10px;
-  color: ${theme.whiteColor};
-  font-weight: bold;
-  cursor: pointer;
-`;
-const UsersCard = () => {
 
-    const [showOptions, setShowOptions] = useState(false)
-    const showOptionsWrapper = () => {
-        setShowOptions(!showOptions)
-    }
+const UsersCard = ({
+  id,
+  firstName,
+  lastName,
+  email,
+  role,
+  active,
+  global,
+  phoneNo,
+  createdAt,
+}) => {
+  const [showOptions, setShowOptions] = useState(false);
+  const showOptionsWrapper = () => {
+    setShowOptions(!showOptions);
+  };
   return (
     <CardWrapper>
       <CardHeader>
@@ -175,7 +173,7 @@ const UsersCard = () => {
 
         <BtsCard onClick={showOptionsWrapper}>
           <TfiMoreAlt style={{ color: "#D9D9D9", fontSize: "24px" }} />
-          <OptionsWrapper className={`${showOptions ? 'show': ''}`}>
+          <OptionsWrapper className={`${showOptions ? "show" : ""}`}>
             <Btn2 to="/EditAdmin">Edit</Btn2>
             <Btn>Delete</Btn>
           </OptionsWrapper>
@@ -183,21 +181,21 @@ const UsersCard = () => {
       </CardHeader>
 
       <Deatails>
-        <H2>Robert Fox</H2>
+        <H2>{firstName}</H2>
         <P>
-          Aduting <Span>(Senior)</Span>
+          Aduting <Span>({role})</Span>
         </P>
         <P>
-          <Span>ID:</Span> 3965
+          <Span>ID:</Span> {id}
         </P>
         <P>
-          <Span>Phone:</Span> (205)555-0100
+          <Span>Phone:</Span> {phoneNo}
         </P>
         <P>
-          <Span>Creation Date:</Span> Dec 4, 2019 23:26
+          <Span>Creation Date:</Span> {createdAt}
         </P>
         <P>
-          <Span>Email:</Span> RobertFox@example.com
+          <Span>Email:</Span> {email}
         </P>
 
         <BoxSWrapper>
@@ -218,15 +216,21 @@ const UsersCard = () => {
           </Box>
 
           <Box>
-            <H3>
-              Current
-              <br />
-              available
-            </H3>
+            {active ? (
+              <H3>
+                Current
+                <br />
+                available
+              </H3>
+            ) : (
+              <H3>
+                Not
+                <br />
+                available
+              </H3>
+            )}
           </Box>
         </BoxSWrapper>
-
-        <BtnDeatails>VIEW DETAILS</BtnDeatails>
       </Deatails>
     </CardWrapper>
   );

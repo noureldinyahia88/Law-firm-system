@@ -154,7 +154,18 @@ const BtnDeatails = styled.button`
   cursor: pointer;
 `;
 
-const LawerUserCard = () => {
+const LawerUserCard = ({
+  id,
+  firstName,
+  lastName,
+  phoneNo,
+  createdAt,
+  lawType,
+  isSenior,
+  email,
+  experienceYear,
+  active
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const showOptionsWrapper = () => {
     setShowOptions(!showOptions);
@@ -163,7 +174,7 @@ const LawerUserCard = () => {
     <CardWrapper>
       <CardHeader>
         <StatueWrapper>
-          <Statue>ACTIVE</Statue>
+          {active ? (<Statue>ACTIVE</Statue>):(<Statue className="red">Not ACTIVE</Statue>)}
         </StatueWrapper>
 
         <ImageWrapper>
@@ -182,27 +193,28 @@ const LawerUserCard = () => {
       </CardHeader>
 
       <Deatails>
-        <H2>Robert Fox</H2>
+        <H2>{firstName}</H2>
         <P>
-          Aduting <Span>(Senior)</Span>
+          Aduting <Span>({lawType})</Span>
         </P>
         <P>
-          <Span>ID:</Span> 3965
+          <Span>ID:</Span> {id}
         </P>
         <P>
-          <Span>Phone:</Span> (205)555-0100
+          <Span>Phone:</Span> {phoneNo}
         </P>
         <P>
-          <Span>Creation Date:</Span> Dec 4, 2019 23:26
+          <Span>Creation Date:</Span>
+          {createdAt}
         </P>
         <P>
-          <Span>Email:</Span> RobertFox@example.com
+          <Span>Email:</Span> {email}
         </P>
 
         <BoxSWrapper>
           <Box>
             <H3>
-              6 Years
+              {experienceYear} Years
               <br />
               experience
             </H3>
@@ -217,11 +229,19 @@ const LawerUserCard = () => {
           </Box>
 
           <Box>
-            <H3>
-              Current
-              <br />
-              available
-            </H3>
+            {active ? (
+              <H3>
+                Current
+                <br />
+                available
+              </H3>
+            ) : (
+              <H3>
+                Not
+                <br />
+                available
+              </H3>
+            )}
           </Box>
         </BoxSWrapper>
 

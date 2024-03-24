@@ -4,6 +4,8 @@ import userImg from "../../assets/Frame 11664.png";
 import edit from "../../assets/edit-2-fill.png";
 import trash from "../../assets/trash-fill.png";
 import theme from "../../variables";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { deleteAdmin, queryClient } from "../Https/dashboard";
 
 const UserCardV2Wrapper = styled.div`
   background-color: #f0f4fa;
@@ -59,7 +61,43 @@ const Button = styled.button`
   }
 `;
 
-const UserCardV2 = ({firstName, lastName, email, role, active, global}) => {
+const UserCardV2 = ({
+  id,
+  firstName,
+  lastName,
+  email,
+  role,
+  active,
+  global,
+  onClick,
+}) => {
+  const handleEdit = () => {
+    onClick(id);
+    localStorage.setItem("ClickedAdminIdToDelete", id);
+  };
+
+  // *******************************delete Admin*********************************************
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: deleteAdmin,
+    // onMutate:()=>{
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["admins"],
+    //   });
+    // },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["admins"],
+      });
+      console.log("suc");
+    },
+  });
+
+  function handleDelete() {
+    onClick(id);
+    localStorage.setItem("ClickedAdminIdToDelete", id);
+    deleteMutate({ id: localStorage.getItem("ClickedAdminIdToDelete") });
+  }
+
   return (
     <UserCardV2Wrapper>
       <UserDeatailsWrapper>
@@ -73,10 +111,10 @@ const UserCardV2 = ({firstName, lastName, email, role, active, global}) => {
       </UserDeatailsWrapper>
 
       <UserBtns>
-        <Button>
+        <Button onClick={handleEdit}>
           Edit <Img src={edit} alt="" />
         </Button>
-        <Button className="delete">
+        <Button className="delete" onClick={handleDelete}>
           Delete <Img src={trash} alt="" />
         </Button>
       </UserBtns>

@@ -1,5 +1,4 @@
 export async function LoginFun(userData) {
-
     const response = await fetch('http://3.125.116.109:8080/auth/login', {
       method: 'POST',
       headers: {
@@ -16,6 +15,7 @@ export async function LoginFun(userData) {
     }
   
     const { token } = await response.json();
+    localStorage.setItem('token', token)
     // setToken(token);
     return token;
   }

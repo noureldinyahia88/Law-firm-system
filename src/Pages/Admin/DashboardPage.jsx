@@ -8,9 +8,10 @@ import theme from "../../variables";
 import plusImg from "../../assets/plus-square-fill.png";
 import UserCardV2 from "../../component/AdminComponent/UserCardV2";
 import { NavLink } from "react-router-dom";
-import { fetchAdmins } from "../../component/Https/dashboard";
-import { useQuery } from "@tanstack/react-query";
+import { fetchAdmins, fetchClients, fetchLawers } from "../../component/Https/dashboard";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import Loading from "../../component/ui/Loading";
+
 
 const PageWrapper = styled.div`
   display: flex;
@@ -137,9 +138,7 @@ const DashboardPage = () => {
     setActiveTab(tabNumber);
   };
 
-  // const data = fetchAdmins();
-  // console.log(data);
-// get Admins
+// *******************************get Admins*********************************************
 const { data, isLoading, isError, error } = useQuery({
   queryKey: ['admins'],
   queryFn:  fetchAdmins,
@@ -171,10 +170,73 @@ if (data) {
     role={event.role}
     active={event.active}
     global={event.global}
+    onClick={(id) => console.log(id)}
      />
   ));
-  console.log("data",content);
+}
 
+// *******************************get Lawyers*********************************************
+const { data: lawyersData, isLoading:isLoadingLawyer , isError:isErrorLawyer, error:errorLawyer } = useQuery({
+  queryKey: ['lawyers'],
+  queryFn:  fetchLawers,
+  staleTime: 5000,
+});
+
+let lawyer;
+
+if (isLoadingLawyer) {
+  lawyer = <Loading />;
+
+  console.log("load",lawyer);
+}
+
+if (isErrorLawyer) {
+  lawyer = <h1>{errorLawyer.info?.message}</h1>;
+  console.log("err",lawyer);
+  console.log(errorLawyer);
+}
+
+if (lawyersData) {
+  console.log("lawyer", lawyersData);
+  lawyer = lawyersData.map((event) => (
+    <UserCardV2 
+    key={event.id}
+    id={event.id}
+    firstName={event.firstName}
+    lastName={event.lastName}
+    onClick={(id) => console.log(id)}
+     />
+  ));
+}
+// *******************************get Clients*********************************************
+const { data: clientsData, isLoading:isLoadingclient , isError:isErrorclient, error:errorclient } = useQuery({
+  queryKey: ['clients'],
+  queryFn:  fetchClients,
+  staleTime: 5000,
+});
+
+let clients;
+
+if (isLoadingclient) {
+  clients = <Loading />;
+}
+
+if (isErrorclient) {
+  clients = <h1>{errorclient.info?.message}</h1>;
+  console.log("err",lawyer);
+  console.log(errorclient);
+}
+
+if (clientsData) {
+  clients = clientsData.map((event) => (
+    <UserCardV2 
+    key={event.id}
+    id={event.id}
+    firstName={event.firstName}
+    lastName={event.lastName}
+    onClick={(id) => console.log(id)}
+     />
+  ));
 }
 
   return (
@@ -248,7 +310,7 @@ if (data) {
 
                   {activeTab === 2 && (
                     <UserWrapper>
-                      <UserCardV2 />
+                      {lawyer}
 
                       <PaginationWrapper>
                         <ResultP>Showing 1 to 813 entries</ResultP>
@@ -258,8 +320,7 @@ if (data) {
 
                   {activeTab === 3 && (
                     <UserWrapper>
-                      <UserCardV2 />
-                      <UserCardV2 />
+                      {clients}
 
                       <PaginationWrapper>
                         <ResultP>Showing 1 to 813 entries</ResultP>

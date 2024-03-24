@@ -132,7 +132,6 @@ const Login = () => {
       // to refetch the data
       QueryClient.invalidateQueries({ queryKey: ['data'] });
       console.log("success");
-      console.log(data);
   
       // const decodedToken = jwtDecode(data);
   

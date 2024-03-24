@@ -7,6 +7,10 @@ import { IoSearch } from "react-icons/io5";
 import plusImg from "../../assets/plus-square-fill.png";
 import { NavLink } from "react-router-dom";
 import ClientCard from "../../component/AdminComponent/ClientCard";
+import { useQuery } from "@tanstack/react-query";
+import { fetchClients } from "../../component/Https/dashboard";
+import Loading from "../../component/ui/Loading";
+import NotFoundUi from "../../component/ui/NotFoundUi";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -177,6 +181,53 @@ const WrapperContent = styled.div`
   padding: 0 20px;
 `;
 const ManageClients = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["admins"],
+    queryFn: fetchClients,
+    staleTime: 5000,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = <Loading />;
+    console.log("load", content);
+  }
+
+  if (isError) {
+    content = <h1>{error.info?.message}</h1>;
+    console.log("err", content);
+    console.log(error);
+  }
+
+  if (data) {
+    // Filter data based on search query
+    const filteredData = data.filter((event) => {
+      // return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  
+    if (filteredData.length === 0) {
+      content = <NotFoundUi>Not Found</NotFoundUi>;
+    } else {
+      content = filteredData.map((event) => (
+        <ClientCard
+          key={event.id}
+          id={event.id}
+          firstName={event.firstName}
+          lastName={event.lastName}
+          email={event.email}
+          role={event.role}
+          active={event.active}
+          global={event.global}
+          phoneNo={event.phoneNo}
+          createdAt={event.createdAt}
+        />
+      ));
+    }
+  }
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -235,9 +286,7 @@ const ManageClients = () => {
                 </TableHeader>
 
                 <WrapperContent>
-                  <ClientCard />
-                  <ClientCard />
-                  <ClientCard />
+                  {content}
                 </WrapperContent>
               </ManageUserWrapper>
             </Wrapper>

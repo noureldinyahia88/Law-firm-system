@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../component/ui/Header";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
@@ -8,6 +8,10 @@ import plusImg from "../../assets/plus-square-fill.png";
 import UsersCard from "../../component/AdminComponent/UsersCard";
 import LawerUserCard from "../../component/AdminComponent/LawerUserCard";
 import { NavLink } from "react-router-dom";
+import NotFoundUi from "../../component/ui/NotFoundUi";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../component/ui/Loading";
+import { fetchLawers } from "../../component/Https/dashboard";
 
 const Container = styled.div`
   max-width: 1550px;
@@ -119,6 +123,53 @@ const ResultP = styled.p`
 `;
 
 const ManageLawyers = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["admins"],
+    queryFn: fetchLawers,
+    staleTime: 5000,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = <Loading />;
+    console.log("load", content);
+  }
+
+  if (isError) {
+    content = <h1>{error.info?.message}</h1>;
+    console.log("err", content);
+    console.log(error);
+  }
+
+  if (data) {
+    // Filter data based on search query
+    const filteredData = data.filter((event) => {
+      return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  
+    if (filteredData.length === 0) {
+      content = <NotFoundUi>Not Found</NotFoundUi>;
+    } else {
+      content = filteredData.map((event) => (
+        <LawerUserCard
+          key={event.id}
+          id={event.id}
+          firstName={event.firstName}
+          lastName={event.lastName}
+          email={event.email}
+          role={event.role}
+          active={event.active}
+          global={event.global}
+          phoneNo={event.phoneNo}
+          createdAt={event.createdAt}
+          experienceYear={event.experienceYear}
+        />
+      ));
+    }
+  }
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -133,6 +184,8 @@ const ManageLawyers = () => {
                 <SearchInput
                   type="text"
                   placeholder="Search for a lawer 'id or email' ?"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </SearchWrapper>
               <BtnsWrapper>
@@ -144,14 +197,7 @@ const ManageLawyers = () => {
             </ContentHeader>
 
             <ManageLawyerContent>
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
-              <LawerUserCard />
+              {content}
 
               <PaginationWrapper>
                 <ResultP>Showing 1 to 813 entries</ResultP>
