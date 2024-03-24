@@ -8,6 +8,7 @@ import plusImg from "../../assets/plus-square-fill.png";
 import { NavLink } from "react-router-dom";
 import ClientCard from "../../component/AdminComponent/ClientCard";
 import CaseCard from "../../component/AdminComponent/CaseCard";
+import LawerSidebar from "../../component/ui/LawerSidebar";
 
 const Container = styled.div`
   max-width: 1550px;
@@ -196,7 +197,7 @@ const WrapperContent = styled.div`
 const ManageCases = () => {
   return (
     <PageWrapper>
-      <Sidebar />
+      <LawerSidebar />
       <ManageLawyersWrapper>
         <Header />
         <Container>

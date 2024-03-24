@@ -16,17 +16,21 @@ import AddCasePage from "./Pages/Admin/AddCasePage";
 import Login from "./Pages/Login";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./component/Https/dashboard";
+import AdminRoutes from "./Pages/AdminRoutes";
+import LawyerRoutes from "./Pages/Admin/LawyerRoutes";
+import MyProfileLawer from "./Pages/Admin/MyProfileLawer";
 
-//  const queryClient = new QueryClient();
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
 
-          {/* <Route path="/" element={<DashboardPage />}> */}
-          <Route path="/" element={<DashboardPage />}></Route>
+          {/* Admin Routes */}
+          <Route element={<AdminRoutes />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/manageLawyers" element={<ManageLawyers />} />
             <Route path="/manageAdmins" element={<ManageAdmins />} />
             <Route path="/AddAdminPage" element={<AddAdminPage />} />
@@ -36,10 +40,14 @@ function App() {
             <Route path="/MyProfile" element={<MyProfile />} />
             <Route path="/manageClients" element={<ManageClients />} />
             <Route path="/addNewClient" element={<AddNewClientPage />} />
-          {/* </Route> */}
+          </Route>
 
-          <Route path="/ManageCase" element={<ManageCases />} />
-          <Route path="/AddCase" element={<AddCasePage />} />
+          {/* Lawyer Routes */}
+          <Route element={<LawyerRoutes />}>
+            <Route path="/ManageCase" element={<ManageCases />} />
+            <Route path="/AddCase" element={<AddCasePage />} />
+            <Route path="/myProfileLawer" element={<MyProfileLawer />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

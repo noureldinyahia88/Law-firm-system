@@ -94,6 +94,26 @@ export async function deleteAdmin({ id }) {
   return response.json();
 }
 
+// delete Lawyer
+export async function deleteLawer({ id }) {
+  const response = await fetch(`http://3.125.116.109:8080/admin-api/lawyers/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error('An error occurred while deleting the event');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return response.json();
+}
+
 // create a new admin
 export async function createAdmin(formData) {
   // console.log("sss",projectData);

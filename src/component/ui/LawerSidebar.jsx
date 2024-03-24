@@ -112,80 +112,73 @@ const Button = styled(NavLink)`
   }
 `;
 const Warrper = styled.div``;
-const Sidebar = () => {
-  const logedout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("profileType");
-    localStorage.removeItem("ClickedAdminIdToDelete");
-  };
 
-  return (
-    <SidebarWrapper>
-      <SidebarHeader>
-        <SidebarH2>Law System</SidebarH2>
-        <Logo src={logo} alt="" />
-      </SidebarHeader>
+const LawerSidebar = () => {
+    const logedout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("profileType");
+        localStorage.removeItem("ClickedAdminIdToDelete");
+      };
+    
+      return (
+        <SidebarWrapper>
+          <SidebarHeader>
+            <SidebarH2>Law System</SidebarH2>
+            <Logo src={logo} alt="" />
+          </SidebarHeader>
+    
+          <SidebarContent>
+            <SidebarTaps>
+              <Sidebarh3>Admin Panel</Sidebarh3>
+              <TapsWrapper>
+                {/* <Button
+                  className="dashboard"
+                  to="/dashboard"
+                  style={{ textDecoration: "none" }}
+                >
+                  <BsFillGrid1X2Fill style={{ fontSize: "24px" }} />
+                  Dashboard
+                </Button> */}
+    
+                {/* <Button to="/manageLawyers" style={{ textDecoration: "none" }}>
+                  <GoLaw style={{ fontSize: "24px" }} />
+                  Manage Lawers
+                </Button> */}
+    
+    
+                <Button to="/ManageCase" style={{ textDecoration: "none" }}>
+                  <LuMessagesSquare style={{ fontSize: "24px" }} />
+                  Manage Case
+                </Button>
+    
+                <Button to="/myProfileLawer" style={{ textDecoration: "none" }}>
+                  <GoPerson style={{ fontSize: "24px" }} />
+                  My Profile
+                </Button>
 
-      <SidebarContent>
-        <SidebarTaps>
-          <Sidebarh3>Admin Panel</Sidebarh3>
-          <TapsWrapper>
+              </TapsWrapper>
+            </SidebarTaps>
+    
+            <Welcome>
+              <Warrper>
+                <Lamp src={lamp} alt="/" />
+              </Warrper>
+              <Sidebarh3>How is your day today!</Sidebarh3>
+              <SidebarP>Hope you donig well today.</SidebarP>
+            </Welcome>
+    
             <Button
-              className="dashboard"
-              to="/dashboard"
+              className="navLink logout"
+              onClick={logedout}
+              to="/"
               style={{ textDecoration: "none" }}
             >
-              <BsFillGrid1X2Fill style={{ fontSize: "24px" }} />
-              Dashboard
+              <IoIosLogOut style={{ fontSize: "24px" }} />
+              logout
             </Button>
+          </SidebarContent>
+        </SidebarWrapper>
+      );
+}
 
-            <Button to="/manageAdmins" style={{ textDecoration: "none" }}>
-              <RiStockFill style={{ fontSize: "24px" }} />
-              ManageAdmins
-            </Button>
-
-            <Button to="/manageLawyers" style={{ textDecoration: "none" }}>
-              <GoLaw style={{ fontSize: "24px" }} />
-              Manage Lawers
-            </Button>
-
-            <Button to="/manageClients" style={{ textDecoration: "none" }}>
-              <LuMessagesSquare style={{ fontSize: "24px" }} />
-              Manage Client
-            </Button>
-
-            <Button to="/ManageCase" style={{ textDecoration: "none" }}>
-              <LuMessagesSquare style={{ fontSize: "24px" }} />
-              Manage Case
-            </Button>
-
-            <Button to="/MyProfile" style={{ textDecoration: "none" }}>
-              <GoPerson style={{ fontSize: "24px" }} />
-              My Profile
-            </Button>
-          </TapsWrapper>
-        </SidebarTaps>
-
-        <Welcome>
-          <Warrper>
-            <Lamp src={lamp} alt="/" />
-          </Warrper>
-          <Sidebarh3>How is your day today!</Sidebarh3>
-          <SidebarP>Hope you donig well today.</SidebarP>
-        </Welcome>
-
-        <Button
-          className="navLink logout"
-          onClick={logedout}
-          to="/"
-          style={{ textDecoration: "none" }}
-        >
-          <IoIosLogOut style={{ fontSize: "24px" }} />
-          logout
-        </Button>
-      </SidebarContent>
-    </SidebarWrapper>
-  );
-};
-
-export default Sidebar;
+export default LawerSidebar

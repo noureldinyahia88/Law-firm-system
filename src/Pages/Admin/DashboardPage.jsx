@@ -11,6 +11,7 @@ import { NavLink } from "react-router-dom";
 import { fetchAdmins, fetchClients, fetchLawers } from "../../component/Https/dashboard";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import Loading from "../../component/ui/Loading";
+import UserCardLawyerV2 from "../../component/AdminComponent/UserCardLawyerV2";
 
 
 const PageWrapper = styled.div`
@@ -199,7 +200,7 @@ if (isErrorLawyer) {
 if (lawyersData) {
   console.log("lawyer", lawyersData);
   lawyer = lawyersData.map((event) => (
-    <UserCardV2 
+    <UserCardLawyerV2 
     key={event.id}
     id={event.id}
     firstName={event.firstName}

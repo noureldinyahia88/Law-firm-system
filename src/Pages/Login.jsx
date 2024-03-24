@@ -3,9 +3,11 @@ import styled from "styled-components";
 import img from "../assets/loginImage.png";
 import theme from "../variables";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { LoginFun } from "../component/Https/Login";
+import { jwtDecode } from "jwt-decode";
+import { queryClient } from "../component/Https/dashboard";
 
 const LoginPage = styled.div`
   background-color: #f7f6f9;
@@ -125,39 +127,42 @@ const Login = () => {
     reset,
     getValues,
   } = useForm();
+  const navigate = useNavigate();
+  // login
+  const [profileType, setProfileType] = useState([]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: LoginFun,
     onSuccess: (data) => {
       // to refetch the data
-      QueryClient.invalidateQueries({ queryKey: ['data'] });
+      queryClient.invalidateQueries({ queryKey: ["data"] });
       console.log("success");
-  
-      // const decodedToken = jwtDecode(data);
-  
-      // setProfileType(decodedToken.role[0]);
-      // localStorage.setItem('token', data);
-      // localStorage.setItem('profileType', decodedToken.role[0]);
-  
-      // if (decodedToken.role[0] === "ROLE_GLOBAL_ADMIN") {
-      //   navigate('/manageProjects');
-      // } else if (decodedToken.role[0] === "ROLE_PROJECT_MANAGER") {
-      //   navigate('/manageProjectsPM');
-      // } else if (decodedToken.role[0] === "ROLE_EMPLOYEE") {
-      //   navigate('/manageTaskEmplyee');
-      // }
-  
-      // console.log(decodedToken.role[0]);
+      console.log(data);
+
+      const decodedToken = jwtDecode(data);
+
+      setProfileType(decodedToken.role[0]);
+      localStorage.setItem("token", data);
+      localStorage.setItem("profileType", decodedToken.role[0]);
+
+      if (decodedToken.role[0] === "ROLE_ADMIN") {
+        navigate("/dashboard");
+      } else if (decodedToken.role[0] === "ROLE_PROJECT_MANAGER") {
+        navigate("/manageProjectsPM");
+      } else if (decodedToken.role[0] === "ROLE_EMPLOYEE") {
+        navigate("/manageTaskEmplyee");
+      }
+
+      console.log(decodedToken.role[0]);
     },
   });
 
-async function handleSubmitLogin(formData){
-mutate({
-  email: formData.email,
-  password: formData.password,
-})
-
-}
+  async function handleSubmitLogin(formData) {
+    mutate({
+      email: formData.email,
+      password: formData.password,
+    });
+  }
 
   return (
     <LoginPage>
@@ -191,12 +196,12 @@ mutate({
               {...register("password", {
                 required:
                   "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
-                pattern: {
-                  value:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-                  message:
-                    "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
-                },
+                // pattern: {
+                //   value:
+                //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+                //   message:
+                //     "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
+                // },
               })}
             />
             <Span>{errors.password?.message}</Span>
