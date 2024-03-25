@@ -6,6 +6,7 @@ import trash from "../../assets/trash-fill.png";
 import theme from "../../variables";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { deleteAdmin, queryClient } from "../Https/dashboard";
+import { NavLink } from "react-router-dom";
 
 const UserCardV2Wrapper = styled.div`
   background-color: #f0f4fa;
@@ -43,7 +44,7 @@ const UserBtns = styled.div`
   align-items: center;
   gap: 20px;
 `;
-const Button = styled.button`
+const Button = styled(NavLink)`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -55,6 +56,7 @@ const Button = styled.button`
   border-radius: 5px;
   padding: 10px;
   cursor: pointer;
+  text-decoration: none;
   &.delete {
     background-color: #ffd8d8;
     color: #ff1616;
@@ -73,7 +75,7 @@ const UserCardV2 = ({
 }) => {
   const handleEdit = () => {
     onClick(id);
-    localStorage.setItem("ClickedAdminIdToDelete", id);
+    localStorage.setItem("ClickedAdminIdToEdit", id);
   };
 
   // *******************************delete Admin*********************************************
@@ -98,6 +100,7 @@ const UserCardV2 = ({
     deleteMutate({ id: localStorage.getItem("ClickedAdminIdToDelete") });
   }
 
+
   return (
     <UserCardV2Wrapper>
       <UserDeatailsWrapper>
@@ -111,7 +114,7 @@ const UserCardV2 = ({
       </UserDeatailsWrapper>
 
       <UserBtns>
-        <Button onClick={handleEdit}>
+        <Button to="/EditAdmin" onClick={handleEdit}>
           Edit <Img src={edit} alt="" />
         </Button>
         <Button className="delete" onClick={handleDelete}>

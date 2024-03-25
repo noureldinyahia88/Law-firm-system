@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
 import styled from "styled-components";
 import theme from "../../variables";
@@ -9,6 +8,7 @@ import pencil from "../../assets/pencil.png";
 import { useForm } from "react-hook-form";
 import { FaEyeSlash } from "react-icons/fa";
 import arrow from "../../assets/arrowhead-left.png";
+import LawerSidebar from "../../component/ui/LawerSidebar";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -307,7 +307,7 @@ const MyProfileLawer = () => {
 
   return (
     <PageWrapper>
-      <Sidebar />
+      <LawerSidebar />
       <DasdboardContent>
         <Header />
         <Content>

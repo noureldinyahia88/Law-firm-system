@@ -47,7 +47,6 @@ const H2 = styled.h2`
   line-height: 24px;
   text-align: start;
   margin-bottom: 20px;
-
 `;
 
 const ContentHeader = styled.div`
@@ -125,7 +124,7 @@ const ResultP = styled.p`
 const ManageLawyers = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["admins"],
+    queryKey: ["lawyers"],
     queryFn: fetchLawers,
     staleTime: 5000,
   });
@@ -146,9 +145,12 @@ const ManageLawyers = () => {
   if (data) {
     // Filter data based on search query
     const filteredData = data.filter((event) => {
-      return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
+      return (
+        event.id == searchQuery ||
+        event.email.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     });
-  
+
     if (filteredData.length === 0) {
       content = <NotFoundUi>Not Found</NotFoundUi>;
     } else {
@@ -168,6 +170,7 @@ const ManageLawyers = () => {
         />
       ));
     }
+
   }
 
   return (

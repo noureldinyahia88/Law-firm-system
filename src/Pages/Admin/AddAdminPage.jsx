@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { QueryClient, useMutation } from "@tanstack/react-query";
-import { createAdmin } from "../../component/Https/dashboard";
+import { createAdmin, queryClient } from "../../component/Https/dashboard";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -203,67 +203,38 @@ const AddAdminPage = () => {
     formState: { errors },
     reset,
     getValues,
-  } = useForm();
+  } = useForm({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNo: "",
+    isGlobal: "",
+  });
 
   const [showPass, setShowPass] = useState(false);
   const showPassFun = () => {
     setShowPass(!showPass);
   };
 
+
   // add a new admin
-
-  // const [formData, setFormData] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   email: "",
-  //   password: "",
-  //   phoneNo: "",
-  //   isGlobal: true,
-  //   role: "",
-  //   confirmPass: "",
-  // });
-
-  // const handleInput2 = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createAdmin,
     onSuccess: (data) => {
-      QueryClient.invalidateQueries({ queryKey: ["admins"] });
+      queryClient.invalidateQueries({ queryKey: ["admins"] });
       console.log("success");
       console.log(data);
+      reset();
     },
     onError: (data) => {
       console.log(data);
     },
   });
 
-  // function handleSubmitAddNewProject(data) {
-  // const {confirmPass, ...formData} = data
-
-  // console.log("ffd",formData);
-  //   mutate(formData);
-  //   console.error("Mutation error:", error);
-  // }
   async function handleSubmitAddNewProject(data) {
     // const { confirmPass, ...formData } = data;
-    const newFormData = new FormData();
-    newFormData.append("firstName", data.firstName);
-    newFormData.append("lastName", data.lastName);
-    newFormData.append("email", data.email);
-    newFormData.append("password", data.password);
-    newFormData.append("role", data.role);
-    newFormData.append("isGlobal", data.isGlobal);
-    // try {
-    //   await mutate(formData);
-    // } catch (error) {
-    //   console.error("Mutation error:", error);
-    // }
-    console.log(newFormData);
-    createAdmin(newFormData)
-    // // Assuming 'result' contains the data from the mutation
+    mutate(data)
   }
 
   return (
@@ -339,8 +310,6 @@ const AddAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.firstName}
                     />
                     <Span>{errors.firstName?.message}</Span>
                   </FormRow>
@@ -359,8 +328,6 @@ const AddAdminPage = () => {
                           message: "Please Enter Valid email",
                         },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.email}
                     />
                     <Span>{errors.email?.message}</Span>
                   </FormRow>
@@ -382,8 +349,6 @@ const AddAdminPage = () => {
                             "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
                         },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.password}
                     />
                     <StyledEyeSlashIcon onClick={showPassFun} />
                     <Span>{errors.password?.message}</Span>
@@ -398,8 +363,6 @@ const AddAdminPage = () => {
                         // required:
                         //   "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.isGlobal}
                     />
                     <CheckLabel>Check if global</CheckLabel>
                   </FormCheck>
@@ -421,32 +384,8 @@ const AddAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.lastName}
                     />
                     <Span>{errors.lastName?.message}</Span>
-                  </FormRow>
-
-                  <FormRow>
-                    <FormLabel>Role</FormLabel>
-                    <FormInput
-                      type="text"
-                      placeholder="EX: JHONAS"
-                      name="role"
-                      id="role"
-                      {...register("role", {
-                        required:
-                          "Please Enter Valid Role Not Contain Space And not leave Empty",
-                        pattern: {
-                          value: /^[a-zA-Z]+$/,
-                          message:
-                            "Please Enter Valid Role Not Contain Space And not leave Empty",
-                        },
-                      })}
-                      // onChange={handleInput2}
-                      // value={formData.role}
-                    />
-                    <Span>{errors.role?.message}</Span>
                   </FormRow>
 
                   <FormRow>
@@ -463,8 +402,6 @@ const AddAdminPage = () => {
                         //   message: "Please Enter Valid phoneNo",
                         // },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.phoneNo}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
                   </FormRow>
@@ -485,8 +422,6 @@ const AddAdminPage = () => {
                             "The passwords do not match",
                         },
                       })}
-                      // onChange={handleInput2}
-                      // value={formData.confirmPass}
                     />
                     <StyledEyeSlashIcon onClick={showPassFun} />
                     <Span>{errors.confirmPass?.message}</Span>
@@ -495,7 +430,7 @@ const AddAdminPage = () => {
               </InputsWrapper>
 
               <BtnsWrapper>
-                <Button2>Submit</Button2>
+                {isPending ? (<h3>Submiting...</h3>):(<Button2>Submit</Button2>)}
                 <Button2 className="gray" type="reset">
                   Cancel
                 </Button2>

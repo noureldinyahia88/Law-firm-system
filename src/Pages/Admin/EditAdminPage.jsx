@@ -7,6 +7,8 @@ import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { editAdmin, queryClient } from "../../component/Https/dashboard";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -203,6 +205,25 @@ const EditAdminPage = () => {
     setShowPass(!showPass);
   };
 
+  // *******************************Edit Admin*********************************************
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: editAdmin,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["admins"] });
+      console.log("success");
+      console.log(data);
+      reset();
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  async function handleSubmitEditAdmin(data) {
+    // const { confirmPass, ...formData } = data;
+    mutate({data, id: localStorage.getItem("ClickedAdminIdToEdit") })
+  }
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -215,7 +236,7 @@ const EditAdminPage = () => {
               Back to Manage Admins
             </Button>
 
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitEditAdmin)}>
               <H3>Edit Admin</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
@@ -223,7 +244,7 @@ const EditAdminPage = () => {
               <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                <PlusDiv
+                {/* <PlusDiv
                   type="file"
                   {...register("image", {
                     required: "Please upload a valid image file",
@@ -244,11 +265,11 @@ const EditAdminPage = () => {
                     },
                   })}
                   accept=".jpg, .jpeg, .png"
-                />
+                /> */}
                 <PlusDiv2>+</PlusDiv2>
               </AddImageWrapper>
 
-              {errors.image && errors.image.type === "required" && (
+              {/* {errors.image && errors.image.type === "required" && (
                 <Span>Please upload a valid image file</Span>
               )}
               {errors.image && errors.image.type === "validExtension" && (
@@ -256,7 +277,7 @@ const EditAdminPage = () => {
               )}
               {errors.image && errors.image.type === "validSize" && (
                 <Span>Image size should not exceed 3 MB</Span>
-              )}
+              )} */}
 
               <InputsWrapper>
                 <InputWrapper>
@@ -266,6 +287,7 @@ const EditAdminPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="firstName"
+                      name="firstName"
                       {...register("firstName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -285,6 +307,7 @@ const EditAdminPage = () => {
                       type="email"
                       placeholder="EX: Example@gmail.com"
                       id="email"
+                      name="email"
                       {...register("email", {
                         required: "Please Enter Valid email",
                         pattern: {
@@ -302,6 +325,7 @@ const EditAdminPage = () => {
                       type={`${showPass ? "text" : "password"}`}
                       placeholder="0216a5416qasdq"
                       id="password"
+                      name="password"
                       {...register("password", {
                         required:
                           "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
@@ -324,6 +348,7 @@ const EditAdminPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="lastName"
+                      name="lastName"
                       {...register("lastName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -343,12 +368,13 @@ const EditAdminPage = () => {
                       type="number"
                       placeholder="0211581385"
                       id="phoneNo"
+                      name="phoneNo"
                       {...register("phoneNo", {
                         required: "Please Enter Valid phoneNo",
-                        pattern: {
-                          value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                          message: "Please Enter Valid phoneNo",
-                        },
+                        // pattern: {
+                        //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                        //   message: "Please Enter Valid phoneNo",
+                        // },
                       })}
                     />
                     <Span>{errors.phoneNo?.message}</Span>

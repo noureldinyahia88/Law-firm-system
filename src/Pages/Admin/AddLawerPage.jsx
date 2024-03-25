@@ -7,6 +7,8 @@ import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { createLawyer, queryClient } from "../../component/Https/dashboard";
+import { useMutation } from "@tanstack/react-query";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -131,16 +133,16 @@ const FormLabel = styled.label`
   margin-top: -10px;
   margin-left: 15px;
   background-color: #f7f6f9;
-  width: 15%;
+  width: fit-content;
   font-size: 14px;
   font-weight: 600;
   color: ${theme.blueColor};
-  &.confirmPass {
+  /* &.confirmPass {
     width: 27%;
   }
   &.email {
     width: 9%;
-  }
+  } */
 `;
 const FormInput = styled.input`
   background-color: transparent;
@@ -206,12 +208,38 @@ const AddLawerPage = () => {
     formState: { errors },
     reset,
     getValues,
-  } = useForm();
+  } = useForm({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNo: "",
+    experienceYears: "",
+  });
 
   const [showPass, setShowPass] = useState(false);
   const showPassFun = () => {
     setShowPass(!showPass);
   };
+
+    // add a new Lawyer
+    const { mutate, isPending, isError, error } = useMutation({
+      mutationFn: createLawyer,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["lawyers"] });
+        console.log("success");
+        console.log(data);
+        reset();
+      },
+      onError: (data) => {
+        console.log(data);
+      },
+    });
+  
+    async function handleSubmitAddNewLawyer(data) {
+      // const { confirmPass, ...formData } = data;
+      mutate(data)
+    }
 
   return (
     <AdminFormWrapper>
@@ -225,7 +253,7 @@ const AddLawerPage = () => {
               Back to Manage Lawyers
             </Button>
 
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitAddNewLawyer)}>
               <H3>Add Lawyer</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
@@ -233,7 +261,7 @@ const AddLawerPage = () => {
               <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                <PlusDiv
+                {/* <PlusDiv
                   type="file"
                   {...register("image", {
                     required: "Please upload a valid image file",
@@ -254,11 +282,11 @@ const AddLawerPage = () => {
                     },
                   })}
                   accept=".jpg, .jpeg, .png"
-                />
+                /> */}
                 <PlusDiv2>+</PlusDiv2>
               </AddImageWrapper>
 
-              {errors.image && errors.image.type === "required" && (
+              {/* {errors.image && errors.image.type === "required" && (
                 <Span>Please upload a valid image file</Span>
               )}
               {errors.image && errors.image.type === "validExtension" && (
@@ -266,7 +294,7 @@ const AddLawerPage = () => {
               )}
               {errors.image && errors.image.type === "validSize" && (
                 <Span>Image size should not exceed 3 MB</Span>
-              )}
+              )} */}
 
               <InputsWrapper>
                 <InputWrapper>
@@ -276,6 +304,7 @@ const AddLawerPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="firstName"
+                      name="firstName"
                       {...register("firstName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -295,6 +324,7 @@ const AddLawerPage = () => {
                       type="email"
                       placeholder="EX: Example@gmail.com"
                       id="email"
+                      name="email"
                       {...register("email", {
                         required: "Please Enter Valid email",
                         pattern: {
@@ -312,6 +342,7 @@ const AddLawerPage = () => {
                       type="text"
                       placeholder="EX: Value"
                       id="lawType"
+                      name="lawType"
                       {...register("lawType", {
                         required:
                           "Please Enter Valid Law Type Not Contain Space And not leave Empty",
@@ -331,6 +362,7 @@ const AddLawerPage = () => {
                       type={`${showPass ? "text" : "password"}`}
                       placeholder="0216a5416qasdq"
                       id="password"
+                      name="password"
                       {...register("password", {
                         required:
                           "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
@@ -358,6 +390,7 @@ const AddLawerPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="lastName"
+                      name="lastName"
                       {...register("lastName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -374,15 +407,16 @@ const AddLawerPage = () => {
                   <FormRow>
                     <FormLabel>Number</FormLabel>
                     <FormInput
-                      type="number"
+                      type="text"
                       placeholder="0211581385"
                       id="phoneNo"
+                      name="phoneNo"
                       {...register("phoneNo", {
                         required: "Please Enter Valid phoneNo",
-                        pattern: {
-                          value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                          message: "Please Enter Valid phoneNo",
-                        },
+                        // pattern: {
+                        //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                        //   message: "Please Enter Valid phoneNo",
+                        // },
                       })}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
@@ -396,6 +430,7 @@ const AddLawerPage = () => {
                       type="number"
                       placeholder="Enter Experience Years"
                       id="experienceYears"
+                      name="experienceYears"
                       {...register("experienceYears", {
                         required: "Please Enter Valid Experience Years",
                         min: {
@@ -431,7 +466,7 @@ const AddLawerPage = () => {
               </InputsWrapper>
 
               <BtnsWrapper>
-                <Button2>Submit</Button2>
+                {isPending? (<h3>Submiting....</h3>):(<Button2>Submit</Button2>)}
                 <Button2 className="gray" type="reset">
                   Cancel
                 </Button2>

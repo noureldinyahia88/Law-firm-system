@@ -6,6 +6,7 @@ import trash from "../../assets/trash-fill.png";
 import theme from "../../variables";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { deleteAdmin, deleteLawer, queryClient } from "../Https/dashboard";
+import { NavLink } from "react-router-dom";
 
 const UserCardV2Wrapper = styled.div`
   background-color: #f0f4fa;
@@ -43,7 +44,7 @@ const UserBtns = styled.div`
   align-items: center;
   gap: 20px;
 `;
-const Button = styled.button`
+const Button = styled(NavLink)`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -73,7 +74,7 @@ const UserCardLawyerV2 = ({
 }) => {
   const handleEdit = () => {
     onClick(id);
-    localStorage.setItem("ClickedAdminIdToDelete", id);
+    localStorage.setItem("ClickedLawyerIdToEdit", id);
   };
 
   // *******************************delete Admin*********************************************
@@ -111,7 +112,7 @@ const UserCardLawyerV2 = ({
       </UserDeatailsWrapper>
 
       <UserBtns>
-        <Button onClick={handleEdit}>
+        <Button to="/EditLawer" onClick={handleEdit}>
           Edit <Img src={edit} alt="" />
         </Button>
         <Button className="delete" onClick={handleDelete}>

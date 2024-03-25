@@ -30,16 +30,7 @@ const RightContent = styled.div`
   align-items: center;
   gap: 32px;
 `;
-// const SearchInput = styled.input`
-//   background-color: #F7F6F9;
-//   border: none;
-//   border-radius: 8px;
-//   padding: 10px;
-//   width: 344px;
-//   &:focus{
-//     outline: none;
-//   }
-// `;
+
 const Img = styled.img``;
 
 const Header = () => {
@@ -47,7 +38,7 @@ const Header = () => {
     <HeaderWrapper>
       <Container>
         <HeaderContent>
-          <HeaderH2>Hello Mattio,</HeaderH2>
+          <HeaderH2>Hello {localStorage.getItem("usrName")},</HeaderH2>
 
           <RightContent>
             {/* <SearchInput placeholder="Search within system..." /> */}

@@ -142,13 +142,15 @@ const Login = () => {
       const decodedToken = jwtDecode(data);
 
       setProfileType(decodedToken.role[0]);
+
+      localStorage.setItem("usrName", decodedToken.name)
       localStorage.setItem("token", data);
       localStorage.setItem("profileType", decodedToken.role[0]);
 
       if (decodedToken.role[0] === "ROLE_ADMIN") {
         navigate("/dashboard");
-      } else if (decodedToken.role[0] === "ROLE_PROJECT_MANAGER") {
-        navigate("/manageProjectsPM");
+      } else if (decodedToken.role[0] === "ROLE_LAWYER") {
+        navigate("/ManageCase");
       } else if (decodedToken.role[0] === "ROLE_EMPLOYEE") {
         navigate("/manageTaskEmplyee");
       }

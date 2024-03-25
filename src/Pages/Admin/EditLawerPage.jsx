@@ -7,6 +7,13 @@ import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  editLawyer,
+  fetchLawers,
+  queryClient,
+} from "../../component/Https/dashboard";
+import ManageLawyers from "./manageLawyers";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -203,6 +210,49 @@ const EditLawerPage = () => {
     setShowPass(!showPass);
   };
 
+  // *******************************Edit Lawyer*********************************************
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: editLawyer,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["lawyers"] });
+      console.log("success");
+      console.log(data);
+      reset();
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  async function handleSubmitEditLawyer(data) {
+    mutate({ data, id: localStorage.getItem("ClickedLawyerIdToEdit") });
+  }
+
+  // *******************************get Lawyers*********************************************
+  // const { data: lawyersData} = useQuery({
+  //   queryKey: ['lawyers'],
+  //   queryFn:  fetchLawers,
+  //   staleTime: 5000,
+  // });
+
+  // let lawyers = [];
+
+  // if (lawyersData) {
+  //   console.log("lawyer", lawyersData);
+  //   lawyers = lawyersData.map((event) => ({
+  //     key: event.id,
+  //     id: event.id,
+  //     firstName: event.firstName,
+  //     lastName: event.lastName,
+  //     onClick: () => console.log(event.id),
+  //   }));
+  // }
+
+  // const clickedLawyerId = localStorage.getItem("ClickedLawyerIdToEdit");
+
+  // // Find the lawyer object in the lawyers array based on the ID
+  // const selectedLawyer = lawyers.find(lawyer => lawyer.id === clickedLawyerId);
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -210,12 +260,12 @@ const EditLawerPage = () => {
         <Header />
         <Wrapper>
           <Container>
-            <Button to="/manageAdmins">
+            <Button to="/manageLawyers">
               <ArrowIcon src={arrow} alt="" />
               Back to Manage Lawyers
             </Button>
 
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitEditLawyer)}>
               <H3>Edit Lawyer</H3>
               <P>
                 Add a photo so other members <br /> know who you are.
@@ -223,7 +273,7 @@ const EditLawerPage = () => {
               <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                <PlusDiv
+                {/* <PlusDiv
                   type="file"
                   {...register("image", {
                     required: "Please upload a valid image file",
@@ -244,11 +294,11 @@ const EditLawerPage = () => {
                     },
                   })}
                   accept=".jpg, .jpeg, .png"
-                />
+                /> */}
                 <PlusDiv2>+</PlusDiv2>
               </AddImageWrapper>
 
-              {errors.image && errors.image.type === "required" && (
+              {/* {errors.image && errors.image.type === "required" && (
                 <Span>Please upload a valid image file</Span>
               )}
               {errors.image && errors.image.type === "validExtension" && (
@@ -256,7 +306,7 @@ const EditLawerPage = () => {
               )}
               {errors.image && errors.image.type === "validSize" && (
                 <Span>Image size should not exceed 3 MB</Span>
-              )}
+              )} */}
 
               <InputsWrapper>
                 <InputWrapper>
@@ -266,6 +316,7 @@ const EditLawerPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="firstName"
+                      name="firstName"
                       {...register("firstName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -285,6 +336,7 @@ const EditLawerPage = () => {
                       type="email"
                       placeholder="EX: Example@gmail.com"
                       id="email"
+                      name="email"
                       {...register("email", {
                         required: "Please Enter Valid email",
                         pattern: {
@@ -302,6 +354,7 @@ const EditLawerPage = () => {
                       type="text"
                       placeholder="EX: Value"
                       id="lawType"
+                      name="lawType"
                       {...register("lawType", {
                         required:
                           "Please Enter Valid Law Type Not Contain Space And not leave Empty",
@@ -321,6 +374,7 @@ const EditLawerPage = () => {
                       type={`${showPass ? "text" : "password"}`}
                       placeholder="0216a5416qasdq"
                       id="password"
+                      name="password"
                       {...register("password", {
                         required:
                           "Please Enter Valid password which contains upper case and lower case letters, numbers, and special characters",
@@ -335,7 +389,6 @@ const EditLawerPage = () => {
                     <StyledEyeSlashIcon onClick={showPassFun} />
                     <Span>{errors.password?.message}</Span>
                   </FormRow>
-
                 </InputWrapper>
                 <InputWrapper>
                   <FormRow>
@@ -344,6 +397,7 @@ const EditLawerPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="lastName"
+                      name="lastName"
                       {...register("lastName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -363,12 +417,13 @@ const EditLawerPage = () => {
                       type="number"
                       placeholder="0211581385"
                       id="phoneNo"
+                      name="phoneNo"
                       {...register("phoneNo", {
                         required: "Please Enter Valid phoneNo",
-                        pattern: {
-                          value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                          message: "Please Enter Valid phoneNo",
-                        },
+                        // pattern: {
+                        //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                        //   message: "Please Enter Valid phoneNo",
+                        // },
                       })}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
@@ -382,6 +437,7 @@ const EditLawerPage = () => {
                       type="number"
                       placeholder="Enter Experience Years"
                       id="experienceYears"
+                      name="experienceYears"
                       {...register("experienceYears", {
                         required: "Please Enter Valid Experience Years",
                         min: {
@@ -417,7 +473,7 @@ const EditLawerPage = () => {
               </InputsWrapper>
 
               <BtnsWrapper>
-                <Button2>Submit</Button2>
+                {isPending ? <h3>Submit...</h3> : <Button2>Submit</Button2>}
                 <Button2 className="gray" type="reset">
                   Cancel
                 </Button2>

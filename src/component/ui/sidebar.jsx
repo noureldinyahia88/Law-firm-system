@@ -154,10 +154,10 @@ const Sidebar = () => {
               Manage Client
             </Button>
 
-            <Button to="/ManageCase" style={{ textDecoration: "none" }}>
+            {/* <Button to="/ManageCase" style={{ textDecoration: "none" }}>
               <LuMessagesSquare style={{ fontSize: "24px" }} />
               Manage Case
-            </Button>
+            </Button> */}
 
             <Button to="/MyProfile" style={{ textDecoration: "none" }}>
               <GoPerson style={{ fontSize: "24px" }} />
