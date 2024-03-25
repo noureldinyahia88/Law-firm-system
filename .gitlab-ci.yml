@@ -24,7 +24,7 @@ deploy:
     - aws --version
 
   script:
-    - aws s3 sync dist/ s3://law-firm-frontend --delete
+    - aws s3 sync dist/ s3://lawfirm-frontend --delete
 
   only:
     - main
