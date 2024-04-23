@@ -6,6 +6,8 @@ import theme from "../../variables";
 import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { createClient, queryClient } from "../../component/Https/dashboard";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -130,16 +132,10 @@ const FormLabel = styled.label`
   margin-top: -10px;
   margin-left: 15px;
   background-color: #f7f6f9;
-  width: 12%;
+  width: fit-content;
   font-size: 14px;
   font-weight: 600;
   color: ${theme.blueColor};
-  &.confirmPass {
-    width: 27%;
-  }
-  &.email {
-    width: 7%;
-  }
 `;
 const FormInput = styled.input`
   background-color: transparent;
@@ -189,6 +185,24 @@ const AddNewClientPage = () => {
     getValues,
   } = useForm();
 
+  // add a new admin
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: createClient,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
+      console.log("success");
+      console.log(data);
+      reset();
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  async function handleSubmitAddNewClient(data) {
+    mutate(data);
+  }
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -201,48 +215,16 @@ const AddNewClientPage = () => {
               Back to Manage Clients
             </Button>
 
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitAddNewClient)}>
               <H3>Add Client</H3>
-              <P>
+              {/* <P>
                 Add a photo so other members <br /> know who you are.
-              </P>
-              <AddImageWrapper>
+              </P> */}
+              {/* <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                <PlusDiv
-                  type="file"
-                  {...register("image", {
-                    required: "Please upload a valid image file",
-                    validate: {
-                      validExtension: (value) => {
-                        if (!value || !value.name) return true; // Skip validation if no file is selected or no file name
-                        const validExtensions = ["jpg", "jpeg", "png"];
-                        const extension = value.name
-                          .split(".")
-                          .pop()
-                          .toLowerCase();
-                        return validExtensions.includes(extension);
-                      },
-                      validSize: (value) => {
-                        if (!value || !value.size) return true; // Skip validation if no file is selected or no file size
-                        return value.size <= 3 * 1024 * 1024; // Convert MB to bytes
-                      },
-                    },
-                  })}
-                  accept=".jpg, .jpeg, .png"
-                />
                 <PlusDiv2>+</PlusDiv2>
-              </AddImageWrapper>
-
-              {errors.image && errors.image.type === "required" && (
-                <Span>Please upload a valid image file</Span>
-              )}
-              {errors.image && errors.image.type === "validExtension" && (
-                <Span>Invalid image format. Only JPG or PNG are allowed</Span>
-              )}
-              {errors.image && errors.image.type === "validSize" && (
-                <Span>Image size should not exceed 3 MB</Span>
-              )}
+              </AddImageWrapper> */}
 
               <InputsWrapper>
                 <InputWrapper>
@@ -252,6 +234,7 @@ const AddNewClientPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="firstName"
+                      name="firstName"
                       {...register("firstName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -271,6 +254,7 @@ const AddNewClientPage = () => {
                       type="email"
                       placeholder="EX: Example@gmail.com"
                       id="email"
+                      name="email"
                       {...register("email", {
                         required: "Please Enter Valid email",
                         pattern: {
@@ -288,6 +272,7 @@ const AddNewClientPage = () => {
                       type="number"
                       placeholder="EX: 36"
                       id="age"
+                      name="age"
                       {...register("age", {
                         required: "Please Enter Valid Age",
                         min: {
@@ -306,6 +291,7 @@ const AddNewClientPage = () => {
                       type="text"
                       placeholder="EX: JHONAS"
                       id="lastName"
+                      name="lastName"
                       {...register("lastName", {
                         required:
                           "Please Enter Valid firstName Not Contain Space And not leave Empty",
@@ -322,15 +308,16 @@ const AddNewClientPage = () => {
                   <FormRow>
                     <FormLabel className="email">Number</FormLabel>
                     <FormInput
-                      type="number"
+                      type="text"
                       placeholder="0211581385"
                       id="phoneNo"
+                      name="phoneNo"
                       {...register("phoneNo", {
                         required: "Please Enter Valid phoneNo",
-                        pattern: {
-                          value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                          message: "Please Enter Valid phoneNo",
-                        },
+                        // pattern: {
+                        //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                        //   message: "Please Enter Valid phoneNo",
+                        // },
                       })}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
@@ -342,6 +329,7 @@ const AddNewClientPage = () => {
                       type="text"
                       placeholder="EX: Corporate Lawyer"
                       id="jop"
+                      name="jop"
                       {...register("job", {
                         required: "Please Enter Valid Jop",
                         pattern: {
@@ -368,7 +356,8 @@ const AddNewClientPage = () => {
                 <Span>{errors.comment?.message}</Span>
               </FormRow>
               <BtnsWrapper>
-                <Button2>Submit</Button2>
+                {isPending ? <h3>Submiting...</h3> : <Button2>Submit</Button2>}
+
                 <Button2 className="gray" type="reset">
                   Cancel
                 </Button2>

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 1) file .env variables
+# 2) file AWS_ACCESS_KEY_ID

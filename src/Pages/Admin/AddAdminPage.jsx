@@ -237,6 +237,14 @@ const AddAdminPage = () => {
     mutate(data)
   }
 
+  const handleUploud = (e) => {
+    const file = e.target.files[0]
+    console.log(file);
+
+    const formData = new FormData();
+    formData.append("image", file);
+  }
+
   return (
     <AdminFormWrapper>
       <Sidebar />
@@ -257,8 +265,9 @@ const AddAdminPage = () => {
               <AddImageWrapper>
                 <PImg>Add Photo</PImg>
 
-                {/* <PlusDiv
+                <PlusDiv
                   type="file"
+                  onChange={handleUploud}
                   {...register("image", {
                     required: "Please upload a valid image file",
                     validate: {
@@ -278,11 +287,11 @@ const AddAdminPage = () => {
                     },
                   })}
                   accept=".jpg, .jpeg, .png"
-                /> */}
-                {/* <PlusDiv2>+</PlusDiv2> */}
+                />
+                <PlusDiv2>+</PlusDiv2>
               </AddImageWrapper>
 
-              {/* {errors.image && errors.image.type === "required" && (
+              {errors.image && errors.image.type === "required" && (
                 <Span>Please upload a valid image file</Span>
               )}
               {errors.image && errors.image.type === "validExtension" && (
@@ -290,7 +299,7 @@ const AddAdminPage = () => {
               )}
               {errors.image && errors.image.type === "validSize" && (
                 <Span>Image size should not exceed 3 MB</Span>
-              )} */}
+              )}
 
               <InputsWrapper>
                 <InputWrapper>

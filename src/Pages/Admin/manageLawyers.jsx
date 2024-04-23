@@ -126,7 +126,7 @@ const ManageLawyers = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["lawyers"],
     queryFn: fetchLawers,
-    staleTime: 5000,
+    staleTime: 1000,
   });
 
   let content;
@@ -143,16 +143,20 @@ const ManageLawyers = () => {
   }
 
   if (data) {
-    // Filter data based on search query
-    const filteredData = data.filter((event) => {
-      return (
-        event.id == searchQuery ||
-        event.email.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
-
+    let filteredData = [];
+  
+    if (Array.isArray(data)) {
+      // Filter data based on search query
+      filteredData = data.filter((event) => {
+        return (
+          event.id == searchQuery ||
+          event.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+    }
+  
     if (filteredData.length === 0) {
-      content = <NotFoundUi>Not Found</NotFoundUi>;
+      content = <Loading/>;
     } else {
       content = filteredData.map((event) => (
         <LawerUserCard
@@ -170,7 +174,6 @@ const ManageLawyers = () => {
         />
       ));
     }
-
   }
 
   return (

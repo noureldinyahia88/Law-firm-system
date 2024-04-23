@@ -173,10 +173,10 @@ const UsersCard = ({
 
         <BtsCard onClick={showOptionsWrapper}>
           <TfiMoreAlt style={{ color: "#D9D9D9", fontSize: "24px" }} />
-          <OptionsWrapper className={`${showOptions ? "show" : ""}`}>
+          {/* <OptionsWrapper className={`${showOptions ? "show" : ""}`}>
             <Btn2 to="/EditAdmin">Edit</Btn2>
             <Btn>Delete</Btn>
-          </OptionsWrapper>
+          </OptionsWrapper> */}
         </BtsCard>
       </CardHeader>
 

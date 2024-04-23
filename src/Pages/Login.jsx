@@ -55,7 +55,7 @@ const FormLabel = styled.label`
   margin-top: -10px;
   margin-left: 15px;
   background-color: #f7f6f9;
-  width: 15%;
+  width: fit-content;
   font-size: 14px;
   font-weight: 600;
   color: ${theme.blueColor};
@@ -146,6 +146,7 @@ const Login = () => {
       localStorage.setItem("usrName", decodedToken.name)
       localStorage.setItem("token", data);
       localStorage.setItem("profileType", decodedToken.role[0]);
+      localStorage.setItem("ProfileID", decodedToken.sub);
 
       if (decodedToken.role[0] === "ROLE_ADMIN") {
         navigate("/dashboard");

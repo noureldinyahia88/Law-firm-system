@@ -8,11 +8,14 @@ import theme from "../../variables";
 import plusImg from "../../assets/plus-square-fill.png";
 import UserCardV2 from "../../component/AdminComponent/UserCardV2";
 import { NavLink } from "react-router-dom";
-import { fetchAdmins, fetchClients, fetchLawers } from "../../component/Https/dashboard";
+import {
+  fetchAdmins,
+  fetchClients,
+  fetchLawers,
+} from "../../component/Https/dashboard";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import Loading from "../../component/ui/Loading";
 import UserCardLawyerV2 from "../../component/AdminComponent/UserCardLawyerV2";
-
 
 const PageWrapper = styled.div`
   display: flex;
@@ -139,106 +142,119 @@ const DashboardPage = () => {
     setActiveTab(tabNumber);
   };
 
-// *******************************get Admins*********************************************
-const { data, isLoading, isError, error } = useQuery({
-  queryKey: ['admins'],
-  queryFn:  fetchAdmins,
-  staleTime: 5000,
-});
+  // *******************************get Admins*********************************************
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["admins"],
+    queryFn: fetchAdmins,
+    staleTime: 5000,
+  });
 
-let content;
+  let content;
 
-if (isLoading) {
-  content = <Loading />;
+  if (isLoading) {
+    content = <Loading />;
 
-  console.log("load",content);
-}
+    console.log("load", content);
+  }
 
-if (isError) {
-  content = <h1>{error.info?.message}</h1>;
-  console.log("err",content);
-  console.log(error);
-}
+  if (isError) {
+    content = <h1>{error.info?.message}</h1>;
+    console.log("err", content);
+    console.log(error);
+  }
 
-if (data) {
-  content = data.map((event) => (
-    <UserCardV2 
-    key={event.id}
-    id={event.id}
-    firstName={event.firstName}
-    lastName={event.lastName}
-    email={event.email}
-    role={event.role}
-    active={event.active}
-    global={event.global}
-    onClick={(id) => console.log(id)}
-     />
-  ));
-}
+  if (data) {
+    content = data.map((event) => (
+      <UserCardV2
+        key={event.id}
+        id={event.id}
+        firstName={event.firstName}
+        lastName={event.lastName}
+        email={event.email}
+        role={event.role}
+        active={event.active}
+        global={event.global}
+        onClick={(id) => console.log(id)}
+      />
+    ));
+  }
 
-// *******************************get Lawyers*********************************************
-const { data: lawyersData, isLoading:isLoadingLawyer , isError:isErrorLawyer, error:errorLawyer } = useQuery({
-  queryKey: ['lawyers'],
-  queryFn:  fetchLawers,
-  staleTime: 5000,
-});
+  // *******************************get Lawyers*********************************************
+  const {
+    data: lawyersData,
+    isLoading: isLoadingLawyer,
+    isError: isErrorLawyer,
+    error: errorLawyer,
+  } = useQuery({
+    queryKey: ["lawyers"],
+    queryFn: fetchLawers,
+    staleTime: 5000,
+  });
 
-let lawyer;
+  let lawyer;
 
-if (isLoadingLawyer) {
-  lawyer = <Loading />;
+  if (isLoadingLawyer) {
+    lawyer = <Loading />;
+    console.log("load", lawyer);
+  }
 
-  console.log("load",lawyer);
-}
+  if (isErrorLawyer) {
+    lawyer = <h1>{errorLawyer.info?.message}</h1>;
+    console.log("err", lawyer);
+    console.log(errorLawyer);
+  }
 
-if (isErrorLawyer) {
-  lawyer = <h1>{errorLawyer.info?.message}</h1>;
-  console.log("err",lawyer);
-  console.log(errorLawyer);
-}
+  if (lawyersData) {
+    // let lawyersData = []
+    console.log("lawyer", lawyersData);
+    lawyer = lawyersData.map((event) => (
+      <UserCardLawyerV2
+        key={event.id}
+        id={event.id}
+        firstName={event.firstName}
+        lastName={event.lastName}
+        onClick={(id) => console.log(id)}
+      />
+    ));
+  } else {
+    // Handle case where lawyersData is not yet available
+    lawyer = <div>Loading...</div>;
+  }
+  // *******************************get Clients*********************************************
+  const {
+    data: clientsData,
+    isLoading: isLoadingclient,
+    isError: isErrorclient,
+    error: errorclient,
+  } = useQuery({
+    queryKey: ["clients"],
+    queryFn: fetchClients,
+    staleTime: 5000,
+  });
 
-if (lawyersData) {
-  console.log("lawyer", lawyersData);
-  lawyer = lawyersData.map((event) => (
-    <UserCardLawyerV2 
-    key={event.id}
-    id={event.id}
-    firstName={event.firstName}
-    lastName={event.lastName}
-    onClick={(id) => console.log(id)}
-     />
-  ));
-}
-// *******************************get Clients*********************************************
-const { data: clientsData, isLoading:isLoadingclient , isError:isErrorclient, error:errorclient } = useQuery({
-  queryKey: ['clients'],
-  queryFn:  fetchClients,
-  staleTime: 5000,
-});
+  let clients;
 
-let clients;
+  if (isLoadingclient) {
+    clients = <Loading />;
+  }
 
-if (isLoadingclient) {
-  clients = <Loading />;
-}
+  if (isErrorclient) {
+    clients = <h1>{errorclient.info?.message}</h1>;
+    console.log("err", lawyer);
+    console.log(errorclient);
+  }
 
-if (isErrorclient) {
-  clients = <h1>{errorclient.info?.message}</h1>;
-  console.log("err",lawyer);
-  console.log(errorclient);
-}
-
-if (clientsData) {
-  clients = clientsData.map((event) => (
-    <UserCardV2 
-    key={event.id}
-    id={event.id}
-    firstName={event.firstName}
-    lastName={event.lastName}
-    onClick={(id) => console.log(id)}
-     />
-  ));
-}
+  if (clientsData) {
+    clients = clientsData.map((event) => (
+      <UserCardV2
+        key={event.id}
+        id={event.id}
+        firstName={event.firstName}
+        lastName={event.lastName}
+        onClick={(id) => console.log(id)}
+      />
+    ));
+  }
 
   return (
     <PageWrapper>
@@ -272,7 +288,7 @@ if (clientsData) {
                       className={activeTab === 3 ? "active" : ""}
                       onClick={() => handleTabClick(3)}
                     >
-                      Clints
+                      Clients
                       <Border isActive={activeTab === 3} />
                     </Li>
                   </TapsWrapper>

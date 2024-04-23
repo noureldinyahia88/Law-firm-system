@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   editLawyer,
   fetchLawers,
+  fetchLawersByID,
   queryClient,
 } from "../../component/Https/dashboard";
 import ManageLawyers from "./manageLawyers";
@@ -138,16 +139,10 @@ const FormLabel = styled.label`
   margin-top: -10px;
   margin-left: 15px;
   background-color: #f7f6f9;
-  width: 15%;
+  width: fit-content;
   font-size: 14px;
   font-weight: 600;
   color: ${theme.blueColor};
-  &.confirmPass {
-    width: 27%;
-  }
-  &.email {
-    width: 9%;
-  }
 `;
 const FormInput = styled.input`
   background-color: transparent;
@@ -229,29 +224,40 @@ const EditLawerPage = () => {
   }
 
   // *******************************get Lawyers*********************************************
-  // const { data: lawyersData} = useQuery({
-  //   queryKey: ['lawyers'],
-  //   queryFn:  fetchLawers,
-  //   staleTime: 5000,
-  // });
+  const { data: lawyersData } = useQuery({
+    queryKey: ["lawyers"],
+    queryFn: () =>
+      fetchLawersByID({ id: localStorage.getItem("ClickedLawyerIdToEdit") }),
+    // staleTime: 5000,
+    onSuccess: (data) => {
+      console.log("lawyer by id", data);
+    },
+  });
 
-  // let lawyers = [];
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    lawType: "",
+    experienceYears: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  // if (lawyersData) {
-  //   console.log("lawyer", lawyersData);
-  //   lawyers = lawyersData.map((event) => ({
-  //     key: event.id,
-  //     id: event.id,
-  //     firstName: event.firstName,
-  //     lastName: event.lastName,
-  //     onClick: () => console.log(event.id),
-  //   }));
-  // }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
 
-  // const clickedLawyerId = localStorage.getItem("ClickedLawyerIdToEdit");
-
-  // // Find the lawyer object in the lawyers array based on the ID
-  // const selectedLawyer = lawyers.find(lawyer => lawyer.id === clickedLawyerId);
+  useEffect(() => {
+    if (lawyersData) {
+      setFormData(lawyersData);
+    }
+  }, [lawyersData]);
 
   return (
     <AdminFormWrapper>
@@ -326,6 +332,8 @@ const EditLawerPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      value={formData.firstName}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.firstName?.message}</Span>
                   </FormRow>
@@ -344,6 +352,8 @@ const EditLawerPage = () => {
                           message: "Please Enter Valid email",
                         },
                       })}
+                      value={formData.email}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.email?.message}</Span>
                   </FormRow>
@@ -364,6 +374,8 @@ const EditLawerPage = () => {
                             "Please Enter Valid Law Type Not Contain Space And not leave Empty",
                         },
                       })}
+                      value={formData.lawType}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.lawType?.message}</Span>
                   </FormRow>
@@ -407,6 +419,8 @@ const EditLawerPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      value={formData.lastName}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.lastName?.message}</Span>
                   </FormRow>
@@ -425,6 +439,8 @@ const EditLawerPage = () => {
                         //   message: "Please Enter Valid phoneNo",
                         // },
                       })}
+                      value={formData.phoneNo}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
                   </FormRow>
@@ -445,6 +461,8 @@ const EditLawerPage = () => {
                           message: "Please Enter Valid Experience Years",
                         },
                       })}
+                      value={formData.experienceYear}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.experienceYears?.message}</Span>
                   </FormRow>

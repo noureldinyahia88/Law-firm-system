@@ -126,7 +126,7 @@ const ManageAdmins = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["admins"],
     queryFn: fetchAdmins,
-    staleTime: 5000,
+    staleTime: 1000,
   });
 
   let content;
@@ -144,12 +144,20 @@ const ManageAdmins = () => {
 
   if (data) {
     // Filter data based on search query
-    const filteredData = data.filter((event) => {
-      return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
-    });
+    let filteredData = [];
+  
+    if (Array.isArray(data)) {
+      // Filter data based on search query
+      filteredData = data.filter((event) => {
+        return (
+          event.id == searchQuery ||
+          event.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+    }
   
     if (filteredData.length === 0) {
-      content = <NotFoundUi>Not Found</NotFoundUi>;
+      content =  (<h3>Not Found</h3>);
     } else {
       content = filteredData.map((event) => (
         <UsersCard

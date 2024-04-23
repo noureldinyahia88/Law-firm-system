@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
 import styled from "styled-components";
@@ -9,6 +9,12 @@ import pencil from "../../assets/pencil.png";
 import { useForm } from "react-hook-form";
 import { FaEyeSlash } from "react-icons/fa";
 import arrow from "../../assets/arrowhead-left.png";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  editAdmin,
+  fetchAdminByID,
+  queryClient,
+} from "../../component/Https/dashboard";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -304,6 +310,61 @@ const MyProfile = () => {
     setShowUpdateForm(!showUpdateForm);
   };
 
+  // *******************************get Admin data*********************************************
+  const { data } = useQuery({
+    queryKey: ["admins"],
+    queryFn: () => fetchAdminByID({ id: localStorage.getItem("ProfileID") }),
+    staleTime: 1000,
+    onSuccess: (data) => {
+      console.log("Admin by id", data);
+      setFormData(data);
+    },
+  });
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Handle input change and update corresponding form data state
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (data) {
+      setFormData(data);
+    }
+  }, [data]);
+
+  // *******************************Edit My Profile*********************************************
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: editAdmin,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["admins"] });
+      console.log("success");
+      console.log(data);
+      reset();
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+
+  async function handleSubmitEditAdmin(e,data) {
+    e.preventDefault();
+    mutate({ data, id: localStorage.getItem("ProfileID") });
+  }
+
   return (
     <PageWrapper>
       <Sidebar />
@@ -311,7 +372,7 @@ const MyProfile = () => {
         <Header />
         <Content>
           <Container>
-            <Form onSubmit={handleSubmit()}>
+            <Form onSubmit={handleSubmit(handleSubmitEditAdmin)}>
               <Wrapper>
                 <H2>My Profile</H2>
 
@@ -352,7 +413,7 @@ const MyProfile = () => {
                           :
                         </span>
                       </P3>
-                      <P2>Bule</P2>
+                      <P2>{data?.firstName}</P2>
                     </DetlWrapper>
 
                     <DetlWrapper>
@@ -368,7 +429,7 @@ const MyProfile = () => {
                           :
                         </span>
                       </P3>
-                      <P2>Hunter</P2>
+                      <P2>{data?.lastName}</P2>
                     </DetlWrapper>
 
                     <DetlWrapper>
@@ -384,7 +445,7 @@ const MyProfile = () => {
                           :
                         </span>
                       </P3>
-                      <P2>BuleHunter@gmail.com</P2>
+                      <P2>{data?.email}</P2>
                     </DetlWrapper>
 
                     <DetlWrapper>
@@ -416,23 +477,7 @@ const MyProfile = () => {
                           :
                         </span>
                       </P3>
-                      <P2>+20 1166273441</P2>
-                    </DetlWrapper>
-
-                    <DetlWrapper>
-                      <P3>
-                        Law Type{" "}
-                        <span
-                          style={{
-                            marginLeft: "20px",
-                            fontWeight: "800",
-                            fontSize: "20px",
-                          }}
-                        >
-                          :
-                        </span>
-                      </P3>
-                      <P2>Civil Law</P2>
+                      <P2>+20 {data?.phoneNo}</P2>
                     </DetlWrapper>
                   </DeatailsBox>
                 </MyProfileWrapper>
@@ -464,6 +509,8 @@ const MyProfile = () => {
                                 "Please Enter Valid firstName Not Contain Space And not leave Empty",
                             },
                           })}
+                          value={formData.firstName}
+                          onChange={handleInputChange}
                         />
                         <Span>{errors.firstName?.message}</Span>
                       </FormRow>
@@ -481,6 +528,8 @@ const MyProfile = () => {
                               message: "Please Enter Valid email",
                             },
                           })}
+                          value={formData.email}
+                          onChange={handleInputChange}
                         />
                         <Span>{errors.email?.message}</Span>
                       </FormRow>
@@ -522,6 +571,8 @@ const MyProfile = () => {
                                 "Please Enter Valid firstName Not Contain Space And not leave Empty",
                             },
                           })}
+                          value={formData.lastName}
+                          onChange={handleInputChange}
                         />
                         <Span>{errors.lastName?.message}</Span>
                       </FormRow>
@@ -534,11 +585,13 @@ const MyProfile = () => {
                           id="phoneNo"
                           {...register("phoneNo", {
                             required: "Please Enter Valid phoneNo",
-                            pattern: {
-                              value: /^(?:\+?88)?01[3-9]\d{8}$/,
-                              message: "Please Enter Valid phoneNo",
-                            },
+                            // pattern: {
+                            //   value: /^(?:\+?88)?01[3-9]\d{8}$/,
+                            //   message: "Please Enter Valid phoneNo",
+                            // },
                           })}
+                          value={formData.phoneNo}
+                          onChange={handleInputChange}
                         />
                         <Span>{errors.phoneNo?.message}</Span>
                       </FormRow>
@@ -567,7 +620,7 @@ const MyProfile = () => {
                   </InputsWrapper>
 
                   <BtnsWrapper>
-                    <Button2>Update</Button2>
+                    <Button2 type="button" onClick={handleSubmit(handleSubmitEditAdmin)}>Update</Button2>
                     <Button2 className="gray" type="reset">
                       Cancel
                     </Button2>

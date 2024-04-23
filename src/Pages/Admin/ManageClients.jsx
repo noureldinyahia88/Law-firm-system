@@ -204,9 +204,18 @@ const ManageClients = () => {
 
   if (data) {
     // Filter data based on search query
-    const filteredData = data.filter((event) => {
-      // return event.id == searchQuery || event.email.toLowerCase().includes(searchQuery.toLowerCase());
-    });
+    // Filter data based on search query
+    let filteredData = [];
+  
+    if (Array.isArray(data)) {
+      // Filter data based on search query
+      filteredData = data.filter((event) => {
+        // return (
+        //   event.id == searchQuery ||
+        //   event.email.toLowerCase().includes(searchQuery.toLowerCase())
+        // );
+      });
+    }
   
     if (filteredData.length === 0) {
       content = <NotFoundUi>Not Found</NotFoundUi>;

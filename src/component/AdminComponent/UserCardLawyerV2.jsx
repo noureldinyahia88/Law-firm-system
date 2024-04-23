@@ -56,6 +56,7 @@ const Button = styled(NavLink)`
   border-radius: 5px;
   padding: 10px;
   cursor: pointer;
+  text-decoration: none;
   &.delete {
     background-color: #ffd8d8;
     color: #ff1616;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Sidebar from "../../component/ui/sidebar";
 import Header from "../../component/ui/Header";
@@ -7,8 +7,12 @@ import arrow from "../../assets/arrowhead-left.png";
 import { NavLink } from "react-router-dom";
 import { FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { editAdmin, queryClient } from "../../component/Https/dashboard";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  editAdmin,
+  fetchAdminByID,
+  queryClient,
+} from "../../component/Https/dashboard";
 
 const AdminFormWrapper = styled.div`
   display: flex;
@@ -133,16 +137,10 @@ const FormLabel = styled.label`
   margin-top: -10px;
   margin-left: 15px;
   background-color: #f7f6f9;
-  width: 15%;
+  width: fit-content;
   font-size: 14px;
   font-weight: 600;
   color: ${theme.blueColor};
-  &.confirmPass {
-    width: 27%;
-  }
-  &.email {
-    width: 9%;
-  }
 `;
 const FormInput = styled.input`
   background-color: transparent;
@@ -221,8 +219,44 @@ const EditAdminPage = () => {
 
   async function handleSubmitEditAdmin(data) {
     // const { confirmPass, ...formData } = data;
-    mutate({data, id: localStorage.getItem("ClickedAdminIdToEdit") })
+    mutate({ data, id: localStorage.getItem("ClickedAdminIdToEdit") });
   }
+
+  // *******************************get Admin*********************************************
+  const { data } = useQuery({
+    queryKey: ["admins"],
+    queryFn: () =>
+      fetchAdminByID({ id: localStorage.getItem("ClickedAdminIdToEdit") }),
+    staleTime: 1000,
+    onSuccess: (data) => {
+      console.log("lawyer by id", data);
+    },
+  });
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    lawType: "",
+    experienceYears: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (data) {
+      setFormData(data);
+    }
+  }, [data]);
 
   return (
     <AdminFormWrapper>
@@ -297,6 +331,8 @@ const EditAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      value={formData.firstName}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.firstName?.message}</Span>
                   </FormRow>
@@ -315,6 +351,8 @@ const EditAdminPage = () => {
                           message: "Please Enter Valid email",
                         },
                       })}
+                      value={formData.email}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.email?.message}</Span>
                   </FormRow>
@@ -358,6 +396,8 @@ const EditAdminPage = () => {
                             "Please Enter Valid firstName Not Contain Space And not leave Empty",
                         },
                       })}
+                      value={formData.lastName}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.lastName?.message}</Span>
                   </FormRow>
@@ -376,6 +416,8 @@ const EditAdminPage = () => {
                         //   message: "Please Enter Valid phoneNo",
                         // },
                       })}
+                      value={formData.phoneNo}
+                      onChange={handleInputChange}
                     />
                     <Span>{errors.phoneNo?.message}</Span>
                   </FormRow>
