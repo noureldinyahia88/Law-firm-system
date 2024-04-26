@@ -161,10 +161,11 @@ const Login = () => {
   });
 
   async function handleSubmitLogin(formData) {
-    mutate({
-      email: formData.email,
-      password: formData.password,
-    });
+    // mutate({
+    //   email: formData.email,
+    //   password: formData.password,
+    // });
+    navigate("/dashboard")
   }
 
   return (

@@ -73,13 +73,18 @@ const H1Num = styled.h2`
 `;
 
 const Wrapper = styled.div``;
+const Span = styled.span`
+  font-weight: 500;
+  color: red;
+  font-size: 20px;
+  `;
 const Container = styled.div``;
 
 const Insights = () => {
   return (
     <InsightsWrapper>
       <Container>
-        <InsightsrH2>Dashboard</InsightsrH2>
+        <InsightsrH2>Dashboard <Span>Failed to fetch data from the server</Span></InsightsrH2>
 
         <BoxWrapper>
           <Box>
